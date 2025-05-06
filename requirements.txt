@@ -1,1 +1,4 @@
 bcrypt
+gspread
+oauth2client
+datetime
