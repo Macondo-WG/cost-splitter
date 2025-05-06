@@ -9,7 +9,7 @@ creds = ServiceAccountCredentials.from_json_keyfile_dict(st.secrets["gcp_service
 client = gspread.authorize(creds)
 
 # Connect to Google Sheet
-sheet = client.open("HouseholdCosts").sheet1
+sheet = client.open("Permanent-Costs").sheet1
 
 st.title("🏠 Household Cost Tracker")
 
