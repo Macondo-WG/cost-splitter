@@ -22,7 +22,7 @@ split_among = st.multiselect('Split among', ["Alice", "Bob", "Carol", "Dave"])
 
 if st.button("Submit Expense"):
     if name and item and amount:
-        sheet.append_row([name, item, amount, date.strftime("%Y-%m-%d"), split_among])
+        sheet.append_row([name, item, amount, split_among])
         st.success("💾 Cost saved to Google Sheets!")
 
 # Optionally show existing entries
