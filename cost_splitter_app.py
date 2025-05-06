@@ -18,10 +18,11 @@ name = st.selectbox("Name", ["Alice", "Bob", "Carol", "Dave"])
 item = st.text_input("Item")
 amount = st.number_input("Amount (€)", min_value=0.0, format="%.2f")
 date = st.date_input("Date", value=datetime.today())
+split_among = st.multiselect('Split among', ["Alice", "Bob", "Carol", "Dave"]))
 
 if st.button("Submit Expense"):
     if name and item and amount:
-        sheet.append_row([name, item, amount, date.strftime("%Y-%m-%d")])
+        sheet.append_row([name, item, amount, date.strftime("%Y-%m-%d"), split_among])
         st.success("💾 Cost saved to Google Sheets!")
 
 # Optionally show existing entries
