@@ -51,7 +51,7 @@ list_current_names = df_cumsum.name.to_list()
 
 if st.button("print cols"):
     df_itemdata.columns = df_itemdata.columns.str.strip().str.lower()
-    print(df_itemdata["name"])
+    print(df_itemdata["item"])
 
     print(data)
     print(df_cumsum.columns.tolist())
