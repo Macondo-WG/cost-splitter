@@ -20,8 +20,8 @@ spreadsheet = client.open("PermanentExpenses")
 
 
 worksheet1 = spreadsheet.get_worksheet(0) 
-data = worksheet1.get_all_records()
-df_itemdata = pd.DataFrame(data)
+#data = worksheet1.get_all_records()
+#df_itemdata = pd.DataFrame(data)
 # Read all values
 values = worksheet1.get_all_values()
 # Check for only headers or full data
@@ -30,12 +30,13 @@ if len(values) > 1:
 else:
     # Only headers are present
     df_itemdata = pd.DataFrame(columns=values[0])
+st.write(df_itemdata)
 
 
 
 worksheet2 = spreadsheet.get_worksheet(1) 
-cumsum = worksheet2.get_all_records()
-df_cumsum = pd.DataFrame(cumsum)
+#cumsum = worksheet2.get_all_records()
+#df_cumsum = pd.DataFrame(cumsum)
 # Read all values
 values_c = worksheet2.get_all_values()
 # Check for only headers or full data
@@ -44,16 +45,16 @@ if len(values_c) > 1:
 else:
     # Only headers are present
     df_cumsum = pd.DataFrame(columns=values_c[0])
+st.write(df_cumsum)
 
 list_current_names = df_cumsum.name.to_list()
 #list_current_names = ['Leon', 'Robin', 'Alessia']
 
 
 if st.button("print cols"):
-    df_itemdata.columns = df_itemdata.columns.str.strip().str.lower()
+    #df_itemdata.columns = df_itemdata.columns.str.strip().str.lower()
     print(df_itemdata["item"])
 
-    print(data)
     print(df_cumsum.columns.tolist())
     df_itemdata.columns.to_list()
 
