@@ -105,16 +105,26 @@ if st.checkbox("Show all entries"):
     st.dataframe(df_itemdata)
 
 
-##### CREATE NEW USER
-new_user_button = st.button('New Member')
-if new_user_button:
 
-    name =  st.text_input("Name New Member")
-    mov_in = st.date_input("Date of Moving In", value=None) ### YYYY-MM-DD
+
+##### CREATE NEW USER
+
+if "show_new_user_form" not in st.session_state:
+    st.session_state.show_new_user_form = False
+
+if st.button('New Member'):
+    st.session_state.show_new_user_form = True
+
+if st.session_state.show_new_user_form:
+    name = st.text_input("Name New Member")
+    mov_in = st.date_input("Date of Moving In")  # Default None removed
     replaces = st.selectbox("Previous Member", list_current_names)
-    owes, _ = get_final_investments(df_itemdata, df_cumsum, replaces)
-    mov_out = 0
-    recieves = 0
+    
+    # Continue logic if fields are filled
+    if name and mov_in and replaces:
+        owes, _ = get_final_investments(df_itemdata, df_cumsum, replaces)
+        mov_out = 0
+        recieves = 0
 
 
 if st.button("Add Member to List"):
