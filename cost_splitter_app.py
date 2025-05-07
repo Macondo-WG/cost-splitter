@@ -33,7 +33,7 @@ if not data:
     st.error("Sheet 1 is empty or malformed.")
 else:
     df_itemdata = pd.DataFrame(data)
-    st.write(df_itemdata)
+    st.write(df_itemdata.item)
 
 
 values = worksheet1.get_all_values()
