@@ -20,26 +20,20 @@ st.title("🔐 Secure Permanent Expenses Tracker")
 username = st.text_input("Username")
 password = st.text_input("Password", type="password")
 
-if username in user_dict:
+if username in user_dict: # check authentication
     name, hashed_pw = user_dict[username]
     if bcrypt.checkpw(password.encode(), hashed_pw.encode()):
         st.success(f"Welcome, {name}!")
         
- 
-
-
-        # Google auth setup
+         # Google auth setup
         scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
         creds = ServiceAccountCredentials.from_json_keyfile_dict(st.secrets["gcp_service_account"], scope)
         client = gspread.authorize(creds)
 
-        # Connect to sheet and get data as a DataFrame
+        # Connect to google sheet and get data as a DataFrame
         spreadsheet = client.open("PermanentExpenses")
 
-
         worksheet1 = spreadsheet.get_worksheet(0) 
-        #data = worksheet1.get_all_records()
-        #df_itemdata = pd.DataFrame(data)
         # Read all values
         values = worksheet1.get_all_values()
         # Check for only headers or full data
@@ -51,9 +45,9 @@ if username in user_dict:
 
 
         worksheet2 = spreadsheet.get_worksheet(1) 
-        #cumsum = worksheet2.get_all_records()
-        #df_cumsum = pd.DataFrame(cumsum)
-        # Read all values
+        #cumsum = worksheet2.get_all_records() # was not stable
+        #df_cumsum = pd.DataFrame(cumsum) 
+        # use different method
         values_c = worksheet2.get_all_values()
         # Check for only headers or full data
         if len(values_c) > 1:
@@ -61,18 +55,10 @@ if username in user_dict:
         else:
             # Only headers are present
             df_cumsum = pd.DataFrame(columns=values_c[0])
+        list_current_names = df_cumsum.name.to_list() 
+        
 
-
-        list_current_names = df_cumsum.name.to_list()
-
-        #### debug
-        #if st.button("print cols"):
-        #    #df_itemdata.columns = df_itemdata.columns.str.strip().str.lower()
-        #    st.write(df_itemdata)
-        #    st.write(df_cumsum)
-        #    st.write(list_current_names)
-            
-
+        #### DEFINE FUNCTION TO CALCULATE LOSS IN VALUE OF EXPENSES OVER YEARS  
         def get_final_investments(df_itemdata, df_cumsum, name):
             '''selects all items in which <name> participated. counts years from day of purchase until day of moving out. 
             calculates negative compund interest with a value decrease of 10% p.a.'''
@@ -97,11 +83,11 @@ if username in user_dict:
 
                     """)
 
-        item = st.text_input("Item")
-        cost = st.number_input("Cost (€)", min_value=0.0, format="%.2f")
-        date_of_purchase = st.date_input("Date of Purchase", value=datetime.today())
-        bought_by = st.selectbox("Bought By", list_current_names)
-        split_among = st.multiselect('Split Among', list_current_names)
+        item = st.text_input("Item", key="item")
+        cost = st.number_input("Cost (€)", format="%.2f", key="cost")
+        date_of_purchase = st.date_input("Date of Purchase", value=datetime.today(), key="date_of_purchase")
+        bought_by = st.selectbox("Bought By", list_current_names, key="bought_by")
+        split_among = st.multiselect('Split Among', list_current_names, key="split_among")
         split_among = ", ".join(split_among)
 
         # Add a new row and update the sheet
@@ -121,19 +107,24 @@ if username in user_dict:
             worksheet1.update([df_itemdata.columns.values.tolist()] + df_itemdata.values.tolist())
             st.success("✅ Entry saved!")
             st.balloons()
+            st.session_state["item"] = ""
+            st.session_state["cost"] = ""
+            st.session_state["date_of_purchase"] = "" 
+            st.session_state["bought_by"] = ""
+            st.session_state["split_among"] = ""
+                      
 
         # Optionally show table
         if st.checkbox("Show all entries"):
             st.dataframe(df_itemdata)
-
-
-
+            
+        
 
         ##### CREATE NEW USER
         st.markdown("""
-        ### Create New Use
+        ### Create New User
                     """)
-
+        
 
         if "show_new_user_form" not in st.session_state:
             st.session_state.show_new_user_form = False
@@ -142,13 +133,13 @@ if username in user_dict:
             st.session_state.show_new_user_form = True
 
         if st.session_state.show_new_user_form:
-            name = st.text_input("Name New Member")
-            mov_in = st.date_input("Date of Moving In")  # Default None removed
-            replaces = st.selectbox("Previous Member", list_current_names + [None, 'Add Previous Member Manually'])
+            name = st.text_input("Name New Member", key="name")
+            mov_in = st.date_input("Date of Moving In", key="mov_in")  # Default None removed
+            replaces = st.selectbox("Previous Member", list_current_names + [None, 'Add Previous Member Manually'], key="replaces")
 
             # Create text input for user entry
             if replaces == "Add Previous Member Manually": 
-                replaces = st.text_input("Enter New Member")
+                replaces = st.text_input("Enter New Member", key="replaces")
 
             # Continue logic if fields are filled
             if name and mov_in and replaces:
@@ -163,7 +154,7 @@ if username in user_dict:
                     "moving_in_date": mov_in.strftime("%Y-%m-%d"),
                     "owes": owes,
                     "moving_out_date" : mov_out,
-                    "recieves": 0,
+                    "recieves": recieves,
                 }
 
                 #df_cumsum.loc[len(df_cumsum)] = [name, mov_in, owes, mov_out, recieves ]
@@ -174,6 +165,10 @@ if username in user_dict:
                 worksheet2.update([df_cumsum.columns.values.tolist()] + df_cumsum.values.tolist())
                 st.success("✅ Entry saved!")
                 st.balloons()
+                st.session_state["name"] = ""
+                st.session_state["mov_in"] = ""
+                st.session_state["replaces"] = ""
+
     else:
         st.error("Invalid password.")
 elif username:
