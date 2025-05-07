@@ -79,10 +79,10 @@ def get_final_investments(df_itemdata, df_cumsum, name):
 
 ###### CREATE NEW PURCHASE ENTRIES
 item = st.text_input("Item")
-cost = st.number_input("Amount (€)", min_value=0.0, format="%.2f")
-date_of_purchase = st.date_input("Date", value=datetime.today())
-bought_by = st.selectbox("Name", list_current_names)
-split_among = st.multiselect('Split among', list_current_names)
+cost = st.number_input("Cost (€)", min_value=0.0, format="%.2f")
+date_of_purchase = st.date_input("Date of Purchase", value=datetime.today())
+bought_by = st.selectbox("Bought By", list_current_names)
+split_among = st.multiselect('Split Among', list_current_names)
 split_among = ", ".join(split_among)
 
 # Add a new row and update the sheet
@@ -120,7 +120,7 @@ if st.button('New Member'):
 if st.session_state.show_new_user_form:
     name = st.text_input("Name New Member")
     mov_in = st.date_input("Date of Moving In")  # Default None removed
-    replaces = st.selectbox("Previous Member", list_current_names + [None, 'Add New Member'])
+    replaces = st.selectbox("Previous Member", list_current_names + ['Add New Member'])
 
     # Create text input for user entry
     if replaces == "Add Previous Member Manually": 
