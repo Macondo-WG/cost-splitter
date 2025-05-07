@@ -65,7 +65,7 @@ def get_final_investments(df_itemdata, df_cumsum, name):
     no_members = 3 # assume number of WG members stays same
     mask = [name in i for i in df_itemdata.split_among.tolist()]
     
-    years = [round(i.days/365, 2) for i in df_cumsum.moving_out_date[mask] - df_itemdata.bought_on[mask]]
+    years = [round(i.days/365, 2) for i in df_cumsum.moving_out_date[mask] - df_itemdata.date_of_purchase[mask]]
 
     rest_value_item = df_itemdata.cost[mask] * np.power(np.ones_like(df_itemdata.cost[mask])*(1 - 0.01), years)/no_members
 
