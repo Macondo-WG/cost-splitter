@@ -27,6 +27,14 @@ df_cumsum = pd.DataFrame(cumsum)
 #list_current_names = df_cumsum.name.to_list()
 list_current_names = ['Leon', 'Robin', 'Alessia']
 
+worksheet1 = spreadsheet.get_worksheet(0)
+data = worksheet1.get_all_records()
+if not data:
+    st.error("Sheet 1 is empty or malformed.")
+else:
+    df_itemdata = pd.DataFrame(data)
+    st.write(df_itemdata)
+
 
 values = worksheet1.get_all_values()
 if values:
