@@ -1,3 +1,4 @@
+
 import streamlit as st
 import bcrypt
 import gspread
@@ -25,6 +26,7 @@ cumsum = worksheet2.get_all_records()
 df_cumsum = pd.DataFrame(cumsum)
 #list_current_names = df_cumsum.name.to_list()
 list_current_names = ['Leon', 'Robin', 'Alessia']
+
 
 def get_final_investments(df_itemdata, df_cumsum, name):
     '''selects all items in which <name> participated. counts years from day of purchase until day of moving out. 
@@ -57,7 +59,7 @@ item = st.text_input("Item")
 cost = st.number_input("Amount (€)", min_value=0.0, format="%.2f")
 date_of_purchase = st.date_input("Date", value=datetime.today())
 bought_by = st.selectbox("Name", list_current_names)
-split_among = st.multiselect('Split among', )
+split_among = st.multiselect('Split among', list_current_names)
 split_among = ", ".join(split_among)
 
 # Add a new row and update the sheet
@@ -75,9 +77,8 @@ if st.button("Submit Expense"):
     # Upload back to Google Sheets
     worksheet1.clear()
     worksheet1.update([df_itemdata.columns.values.tolist()] + df_itemdata.values.tolist())
-    st.success("✅ Entry saved using Pandas!")
+    st.success("✅ Entry saved!")
 
 # Optionally show table
 if st.checkbox("Show all entries"):
     st.dataframe(df_itemdata)
-
