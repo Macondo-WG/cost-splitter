@@ -28,7 +28,8 @@ df_cumsum = pd.DataFrame(cumsum)
 list_current_names = ['Leon', 'Robin', 'Alessia']
 
 if st.button("print cols"):
-    df_cumsum.columns.tolist()
+    print(data)
+    print(df_cumsum.columns.tolist())
     df_itemdata.columns.to_list()
 
 
