@@ -23,8 +23,8 @@ df_itemdata = pd.DataFrame(data)
 worksheet2 = spreadsheet.get_worksheet(1) 
 cumsum = worksheet2.get_all_records()
 df_cumsum = pd.DataFrame(cumsum)
-list_current_names = df_cumsum.name.to_list()
-
+#list_current_names = df_cumsum.name.to_list()
+list_current_names = ['Leon', 'Robin', 'Alessia']
 
 def get_final_investments(df_itemdata, df_cumsum, name):
     '''selects all items in which <name> participated. counts years from day of purchase until day of moving out. 
