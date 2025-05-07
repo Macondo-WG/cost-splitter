@@ -27,6 +27,15 @@ df_cumsum = pd.DataFrame(cumsum)
 #list_current_names = df_cumsum.name.to_list()
 list_current_names = ['Leon', 'Robin', 'Alessia']
 
+
+values = worksheet1.get_all_values()
+if values:
+    df_itemdata = pd.DataFrame(values[1:], columns=values[0])
+    st.write(df_itemdata)
+else:
+    st.error("No values returned from worksheet.")
+
+
 if st.button("print cols"):
     df_itemdata.columns = df_itemdata.columns.str.strip().str.lower()
     print(df_itemdata["item"])
