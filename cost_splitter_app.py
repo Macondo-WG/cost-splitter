@@ -30,7 +30,7 @@ if len(values) > 1:
 else:
     # Only headers are present
     df_itemdata = pd.DataFrame(columns=values[0])
-st.write(df_itemdata)
+
 
 
 
@@ -45,10 +45,11 @@ if len(values_c) > 1:
 else:
     # Only headers are present
     df_cumsum = pd.DataFrame(columns=values_c[0])
-st.write(df_cumsum)
+
 
 list_current_names = df_cumsum.name.to_list()
 #list_current_names = ['Leon', 'Robin', 'Alessia']
+
 
 if st.button("print cols"):
     #df_itemdata.columns = df_itemdata.columns.str.strip().str.lower()
@@ -72,33 +73,6 @@ def get_final_investments(df_itemdata, df_cumsum, name):
 
     return rest_value_sum, rest_value_item
     
-##### CREATE NEW USER
-new_user_button = st.button('New Member')
-if new_user_button:
-
-    name =  st.text_input("Name New Member")
-    mov_in = st.date_input("Date of Moving In", value=None) ### YYYY-MM-DD
-    replaces = st.selectbox("Previous Member", list_current_names)
-    owes, _ = get_final_investments(df_itemdata, df_cumsum, replaces)
-    mov_out = 0
-    recieves = 0
-
-
-if st.button("Add Member to List"):
-    new_row = {
-        "name": name,
-        "moving_in_date": mov_in,
-        "owes": owes,
-        "moving_out_date" : mov_out,
-        "recieves": 0,
-    }
-    df_cumsum.loc[len(df_cumsum)] = [name, mov_in, owes, mov_out, recieves ]
-    #df_itemdata = pd.concat([df_itemdata, pd.DataFrame([new_row])], ignore_index=True)
-
-    # Upload back to Google Sheets
-    worksheet2.clear()
-    worksheet2.update([df_cumsum.columns.values.tolist()] + df_cumsum.values.tolist())
-    st.success("✅ Entry saved!")
 
 
 ###### CREATE NEW PURCHASE ENTRIES
@@ -130,3 +104,31 @@ if st.button("Submit Expense"):
 if st.checkbox("Show all entries"):
     st.dataframe(df_itemdata)
 
+
+##### CREATE NEW USER
+new_user_button = st.button('New Member')
+if new_user_button:
+
+    name =  st.text_input("Name New Member")
+    mov_in = st.date_input("Date of Moving In", value=None) ### YYYY-MM-DD
+    replaces = st.selectbox("Previous Member", list_current_names)
+    owes, _ = get_final_investments(df_itemdata, df_cumsum, replaces)
+    mov_out = 0
+    recieves = 0
+
+
+if st.button("Add Member to List"):
+    new_row = {
+        "name": name,
+        "moving_in_date": mov_in,
+        "owes": owes,
+        "moving_out_date" : mov_out,
+        "recieves": 0,
+    }
+    df_cumsum.loc[len(df_cumsum)] = [name, mov_in, owes, mov_out, recieves ]
+    #df_itemdata = pd.concat([df_itemdata, pd.DataFrame([new_row])], ignore_index=True)
+
+    # Upload back to Google Sheets
+    worksheet2.clear()
+    worksheet2.update([df_cumsum.columns.values.tolist()] + df_cumsum.values.tolist())
+    st.success("✅ Entry saved!")
