@@ -27,8 +27,9 @@ df_cumsum = pd.DataFrame(cumsum)
 #list_current_names = df_cumsum.name.to_list()
 list_current_names = ['Leon', 'Robin', 'Alessia']
 
-df_cumsum.columns.tolist()
-df_itemdata.columns.to_list()
+if st.button("print cols"):
+    df_cumsum.columns.tolist()
+    df_itemdata.columns.to_list()
 
 
 def get_final_investments(df_itemdata, df_cumsum, name):
