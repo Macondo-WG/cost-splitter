@@ -34,3 +34,60 @@ if st.button("print cols"):
     df_itemdata.columns.to_list()
 
     
+
+
+def get_final_investments(df_itemdata, df_cumsum, name):
+    '''selects all items in which <name> participated. counts years from day of purchase until day of moving out. 
+    calculates negative compund interest with a value decrease of 10% p.a.'''
+    no_members = 3 # assume number of WG members stays same
+    mask = [name in i for i in df_itemdata.split_among.tolist()]
+    
+    years = [round(i.days/365, 2) for i in df_cumsum.moving_out_date[mask] - df_itemdata.bought_on[mask]]
+
+    rest_value_item = df_itemdata.cost[mask] * np.power(np.ones_like(df_itemdata.cost[mask])*(1 - 0.01), years)/no_members
+
+    rest_value_sum = rest_value_item.sum()
+
+    return rest_value_sum, rest_value_item
+    
+##### CREATE NEW USER
+new_user_button = st.button('New Member')
+if new_user_button:
+    name =  st.text_input("Name New Member")
+    mov_in = st.date_input("Date of Moving In", value=None) ### YYYY-MM-DD
+    replaces = st.selectbox("Previous Member", list_current_names)
+    owes, _ = get_final_investments(df_itemdata, df_cumsum, replaces)
+    recieves = 0
+    mov_out = 0
+    df_cumsum.loc[len(df_cumsum)] = [name, mov_in, owes, mov_out, recieves ]
+
+
+###### CREATE NEW PURCHASE ENTRIES
+item = st.text_input("Item")
+cost = st.number_input("Amount (€)", min_value=0.0, format="%.2f")
+date_of_purchase = st.date_input("Date", value=datetime.today())
+bought_by = st.selectbox("Name", list_current_names)
+split_among = st.multiselect('Split among', list_current_names)
+split_among = ", ".join(split_among)
+
+# Add a new row and update the sheet
+# headers in sheet: item	cost	date_of_purchase	bought_by	split_among
+if st.button("Submit Expense"):
+    new_row = {
+        "item": item,
+        "cost": cost,
+        "date_of_purchase": date_of_purchase.strftime("%Y-%m-%d"),
+        "bought_by": bought_by,
+        "split_among" : split_among
+    }
+    df_itemdata = pd.concat([df_itemdata, pd.DataFrame([new_row])], ignore_index=True)
+
+    # Upload back to Google Sheets
+    worksheet1.clear()
+    worksheet1.update([df_itemdata.columns.values.tolist()] + df_itemdata.values.tolist())
+    st.success("✅ Entry saved!")
+
+# Optionally show table
+if st.checkbox("Show all entries"):
+    st.dataframe(df_itemdata)
+
