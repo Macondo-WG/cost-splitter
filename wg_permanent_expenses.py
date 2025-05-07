@@ -76,15 +76,15 @@ if username in user_dict: # check authentication
             return rest_value_sum, rest_value_item
 
         ### button to reset form
-        if st.button("Clear Entries"):
-            st.session_state["item"] = ""
-            st.session_state["cost"] = ""
-            st.session_state["date_of_purchase"] = "" 
-            st.session_state["bought_by"] = ""
-            st.session_state["split_among"] = ""
-            st.session_state["name"] = ""
-            st.session_state["mov_in"] = ""
-            st.session_state["replaces"] = ""    
+        #if st.button("Clear Entries"):
+        #    st.session_state["item"] = ""
+        #    st.session_state["cost"] = ""
+        #    st.session_state["date_of_purchase"] = "" 
+        #    st.session_state["bought_by"] = ""
+        #    st.session_state["split_among"] = ""
+        #    st.session_state["name"] = ""
+        #    st.session_state["mov_in"] = ""
+        #    st.session_state["replaces"] = ""    
 
 
         ###### CREATE NEW PURCHASE ENTRIES
@@ -201,6 +201,12 @@ if username in user_dict: # check authentication
 
             st.success(f"✅ {name} moves-out date and receives {recieves}.")
         
+        if st.button("Clear Entries"):
+            for key in ["name", "mov_in"]:
+                st.session_state[key] = ""
+            st.experimental_rerun()
+
+
         if st.button("Logout"):
             st.logout()        
 
