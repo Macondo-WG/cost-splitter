@@ -72,16 +72,14 @@ if username in user_dict: # check authentication
 
             if moving_out_date is not '0':
                 time_diffs = pd.to_datetime(moving_out_date, format="%Y-%m-%d")  -  pd.to_datetime(df_itemdata.date_of_purchase[mask], format="%Y-%m-%d")
-                st.write(time_diffs)
-
+             
                 years = [round(i.days/365, 2) for i in time_diffs]
-                st.write(years)
-
-                #costs = df_itemdata.cost[mask]
                 
-                #rest_value_item = costs  * np.power(np.ones_like(df_itemdata.cost[mask])*(1 - 0.01), years)/no_members
+                costs = df_itemdata.cost[mask]
+                
+                rest_value_item = costs * np.power(np.ones_like(costs)*(1 - 0.01), years)/no_members
 
-                #rest_value_sum = rest_value_item.sum()
+                rest_value_sum = rest_value_item.sum()
 
                 
                 return 0,0 #rest_value_sum, rest_value_item
