@@ -2,3 +2,5 @@ bcrypt
 gspread
 oauth2client
 datetime
+numpy
+pandas
