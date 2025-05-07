@@ -17,11 +17,11 @@ client = gspread.authorize(creds)
 
 # Connect to sheet and get data as a DataFrame
 spreadsheet = client.open("PermanentExpenses")
-worksheet1 = spreadsheet.sheet1
+worksheet1 = spreadsheet.get_worksheet(0) 
 data = worksheet1.get_all_records()
 df_itemdata = pd.DataFrame(data)
 
-worksheet2 = spreadsheet.sheet2
+worksheet2 = spreadsheet.get_worksheet(1) 
 cumsum = worksheet1.get_all_records()
 df_cumsum = pd.DataFrame(cumsum)
 list_current_names = df_cumsum.name.to_list()
