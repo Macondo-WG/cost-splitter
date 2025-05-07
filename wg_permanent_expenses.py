@@ -201,10 +201,10 @@ if username in user_dict: # check authentication
 
             st.success(f"✅ {name} moves-out date and receives {recieves}.")
         
-        if st.button("Clear Entries"):
-            for key in ["name"]:
-                st.session_state[key] = ""
-            st.experimental_rerun()
+        #if st.button("Clear Entries"):
+        #    for key in ["name"]:
+        #        st.session_state[key] = ""
+        #    st.experimental_rerun()
 
 
         if st.button("Logout"):
