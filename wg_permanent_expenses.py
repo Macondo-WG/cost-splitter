@@ -67,16 +67,20 @@ if username in user_dict: # check authentication
             mask = [name in i for i in df_itemdata.split_among.tolist()]
             no_members = 3 # assume number of WG members stays same
             
-            if df_cumsum.moving_out_date[mask] is not 0:
-                years = [round(i.days/365, 2) for i in df_cumsum.moving_out_date[mask] - df_itemdata.date_of_purchase[mask]]
+            moving_out_date = df_cumsum.loc[df_cumsum['name'] == name, 'moving_out'].iloc[0]
+            st.write('moving_out_date' , moving_out_date) #debug
 
+            if moving_out_date is not 0:
+                years = [round(i.days/365, 2) for i in moving_out_date - df_itemdata.date_of_purchase[mask]]
+            
                 rest_value_item = df_itemdata.cost[mask] * np.power(np.ones_like(df_itemdata.cost[mask])*(1 - 0.01), years)/no_members
 
                 rest_value_sum = rest_value_item.sum()
 
+                
                 return rest_value_sum, rest_value_item
             else:
-                return 0, 0
+                return 0,0
 
         ### button to reset form
         #def on_click(inputs):
