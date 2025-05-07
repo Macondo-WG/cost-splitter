@@ -24,8 +24,8 @@ df_itemdata = pd.DataFrame(data)
 worksheet2 = spreadsheet.get_worksheet(1) 
 cumsum = worksheet2.get_all_records()
 df_cumsum = pd.DataFrame(cumsum)
-#list_current_names = df_cumsum.name.to_list()
-list_current_names = ['Leon', 'Robin', 'Alessia']
+list_current_names = df_cumsum.name.to_list()
+#list_current_names = ['Leon', 'Robin', 'Alessia']
 
 if st.button("print cols"):
     #df_itemdata.columns = df_itemdata.columns.str.strip().str.lower()
