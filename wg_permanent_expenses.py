@@ -76,7 +76,12 @@ if username in user_dict: # check authentication
             return rest_value_sum, rest_value_item
 
         ### button to reset form
-        #if st.button("Clear Entries"):
+        def on_click(inputs):
+            for input in inputs:
+                st.session_state.input = ""
+
+
+
         #    st.session_state["item"] = ""
         #    st.session_state["cost"] = ""
         #    st.session_state["date_of_purchase"] = "" 
@@ -168,6 +173,8 @@ if username in user_dict: # check authentication
                 worksheet2.update([df_cumsum.columns.values.tolist()] + df_cumsum.values.tolist())
                 st.success("✅ Entry saved!")
                 st.balloons()
+
+            st.button("Clear", on_click=on_click(['name', 'mov_in', 'replaces']))
                 
 
 
@@ -203,7 +210,7 @@ if username in user_dict: # check authentication
         
         #if st.button("Clear Entries"):
         #    for key in ["name"]:
-        #        st.session_state[key] = ""
+        #        st.session_state.key = ""
         #    st.experimental_rerun()
 
 
