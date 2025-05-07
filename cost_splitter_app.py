@@ -132,19 +132,20 @@ if st.session_state.show_new_user_form:
         mov_out = 0
         recieves = 0
 
-if st.button("Add Member to List"):
-    new_row = {
-        "name": name,
-        "moving_in_date": mov_in,
-        "owes": owes,
-        "moving_out_date" : mov_out,
-        "recieves": 0,
-    }
 
-    #df_cumsum.loc[len(df_cumsum)] = [name, mov_in, owes, mov_out, recieves ]
-    df_cumsum = pd.concat([df_cumsum, pd.DataFrame([new_row])], ignore_index=True)
+    if st.button("Add Member to List"):
+        new_row = {
+            "name": name,
+            "moving_in_date": mov_in.strftime("%Y-%m-%d"),
+            "owes": owes,
+            "moving_out_date" : mov_out,
+            "recieves": 0,
+        }
 
-    # Upload back to Google Sheets
-    worksheet2.clear()
-    worksheet2.update([df_cumsum.columns.values.tolist()] + df_cumsum.values.tolist())
-    st.success("✅ Entry saved!")
+        #df_cumsum.loc[len(df_cumsum)] = [name, mov_in, owes, mov_out, recieves ]
+        df_cumsum = pd.concat([df_cumsum, pd.DataFrame([new_row])], ignore_index=True)
+
+        # Upload back to Google Sheets
+        worksheet2.clear()
+        worksheet2.update([df_cumsum.columns.values.tolist()] + df_cumsum.values.tolist())
+        st.success("✅ Entry saved!")
