@@ -32,8 +32,6 @@ else:
     df_itemdata = pd.DataFrame(columns=values[0])
 
 
-
-
 worksheet2 = spreadsheet.get_worksheet(1) 
 #cumsum = worksheet2.get_all_records()
 #df_cumsum = pd.DataFrame(cumsum)
@@ -48,13 +46,17 @@ else:
 
 
 list_current_names = df_cumsum.name.to_list()
+
 #list_current_names = ['Leon', 'Robin', 'Alessia']
 
 
+
+#### debug
 if st.button("print cols"):
     #df_itemdata.columns = df_itemdata.columns.str.strip().str.lower()
     st.write(df_itemdata)
     st.write(df_cumsum)
+    st.write(list_current_names)
     
 
 
@@ -125,7 +127,6 @@ if st.session_state.show_new_user_form:
         owes, _ = get_final_investments(df_itemdata, df_cumsum, replaces)
         mov_out = 0
         recieves = 0
-
 
 if st.button("Add Member to List"):
     new_row = {
