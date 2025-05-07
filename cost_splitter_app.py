@@ -27,6 +27,9 @@ df_cumsum = pd.DataFrame(cumsum)
 #list_current_names = df_cumsum.name.to_list()
 list_current_names = ['Leon', 'Robin', 'Alessia']
 
+df_cumsum.columns.tolist()
+df_itemdata.columns.to_list()
+
 
 def get_final_investments(df_itemdata, df_cumsum, name):
     '''selects all items in which <name> participated. counts years from day of purchase until day of moving out. 
@@ -82,3 +85,4 @@ if st.button("Submit Expense"):
 # Optionally show table
 if st.checkbox("Show all entries"):
     st.dataframe(df_itemdata)
+
