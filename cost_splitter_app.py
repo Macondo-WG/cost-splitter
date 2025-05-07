@@ -76,13 +76,30 @@ def get_final_investments(df_itemdata, df_cumsum, name):
 ##### CREATE NEW USER
 new_user_button = st.button('New Member')
 if new_user_button:
+
     name =  st.text_input("Name New Member")
     mov_in = st.date_input("Date of Moving In", value=None) ### YYYY-MM-DD
     replaces = st.selectbox("Previous Member", list_current_names)
     owes, _ = get_final_investments(df_itemdata, df_cumsum, replaces)
-    recieves = 0
     mov_out = 0
-    df_cumsum.loc[len(df_cumsum)] = [name, mov_in, owes, mov_out, recieves ]
+    recieves = 0
+
+
+    if st.button("Add Member to List"):
+        new_row = {
+            "name": item,
+            "moving_in_date": mov_in,
+            "owes": owes,
+            "moving_out_date" : mov_out,
+            "recieves": 0,
+        }
+        df_cumsum.loc[len(df_cumsum)] = [name, mov_in, owes, mov_out, recieves ]
+        #df_itemdata = pd.concat([df_itemdata, pd.DataFrame([new_row])], ignore_index=True)
+
+        # Upload back to Google Sheets
+        worksheet2.clear()
+        worksheet2.update([df_cumsum.columns.values.tolist()] + df_cumsum.values.tolist())
+        st.success("✅ Entry saved!")
 
 
 ###### CREATE NEW PURCHASE ENTRIES
