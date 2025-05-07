@@ -70,7 +70,8 @@ if username in user_dict: # check authentication
             moving_out_date = df_cumsum.loc[df_cumsum['name'] == name, 'moving_out_date'].iloc[0]
             st.write('moving_out_date' , moving_out_date) #debug
 
-            if moving_out_date is not 0:
+            if moving_out_date is not '0':
+
                 years = [round(i.days/365, 2) for i in moving_out_date - df_itemdata.date_of_purchase[mask]]
             
                 rest_value_item = df_itemdata.cost[mask] * np.power(np.ones_like(df_itemdata.cost[mask])*(1 - 0.01), years)/no_members
