@@ -27,30 +27,11 @@ df_cumsum = pd.DataFrame(cumsum)
 #list_current_names = df_cumsum.name.to_list()
 list_current_names = ['Leon', 'Robin', 'Alessia']
 
-worksheet1 = spreadsheet.get_worksheet(0)
-data = worksheet1.get_all_records()
-if not data:
-    st.error("Sheet 1 is empty or malformed.")
-else:
-    df_itemdata = pd.DataFrame(data)
-    st.write(df_itemdata.item)
-
-
-values = worksheet1.get_all_values()
-if values:
-    df_itemdata = pd.DataFrame(values[1:], columns=values[0])
-    st.write(df_itemdata)
-else:
-    st.error("No values returned from worksheet.")
-
-
 if st.button("print cols"):
-    df_itemdata.columns = df_itemdata.columns.str.strip().str.lower()
-    print(df_itemdata["item"])
+    #df_itemdata.columns = df_itemdata.columns.str.strip().str.lower()
+    st.write(df_itemdata["item"])
 
-    print(data)
-    print(df_cumsum.columns.tolist())
-    df_itemdata.columns.to_list()
+    st.write(df_itemdata.columns.to_list())
 
 
 
