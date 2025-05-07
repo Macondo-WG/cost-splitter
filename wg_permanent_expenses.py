@@ -74,7 +74,17 @@ if username in user_dict: # check authentication
             rest_value_sum = rest_value_item.sum()
 
             return rest_value_sum, rest_value_item
-            
+
+        ### button to reset form
+        if st.button("Clear Entries"):
+            st.session_state["item"] = ""
+            st.session_state["cost"] = ""
+            st.session_state["date_of_purchase"] = "" 
+            st.session_state["bought_by"] = ""
+            st.session_state["split_among"] = ""
+            st.session_state["name"] = ""
+            st.session_state["mov_in"] = ""
+            st.session_state["replaces"] = ""    
 
 
         ###### CREATE NEW PURCHASE ENTRIES
@@ -106,11 +116,7 @@ if username in user_dict: # check authentication
             worksheet1.update([df_itemdata.columns.values.tolist()] + df_itemdata.values.tolist())
             st.success("✅ Entry saved!")
             st.balloons()
-            st.session_state["item"] = ""
-            st.session_state["cost"] = ""
-            st.session_state["date_of_purchase"] = "" 
-            st.session_state["bought_by"] = ""
-            st.session_state["split_among"] = ""
+           
                       
 
         # Optionally show table
@@ -162,9 +168,7 @@ if username in user_dict: # check authentication
                 worksheet2.update([df_cumsum.columns.values.tolist()] + df_cumsum.values.tolist())
                 st.success("✅ Entry saved!")
                 st.balloons()
-                st.session_state["name"] = ""
-                st.session_state["mov_in"] = ""
-                st.session_state["replaces"] = ""
+                
 
 
         ### When member moves out call
