@@ -169,7 +169,11 @@ if username in user_dict: # check authentication
                 st.session_state["mov_in"] = ""
                 st.session_state["replaces"] = ""
 
+        if st.button("Logout"):
+            st.logout()        
+
     else:
         st.error("Invalid password.")
 elif username:
     st.error("Invalid username.")
+    
