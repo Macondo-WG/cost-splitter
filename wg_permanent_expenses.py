@@ -197,7 +197,7 @@ if username in user_dict: # check authentication
 
         if st.session_state.user2move_out_form: 
             name = st.selectbox("Member to Move Out", list_current_names )
-            moving_out_date = st.date_input("Date of Moving Out", value=datetime.today(), key="moving_out_date").strftime("%Y-%m-%d"),
+            moving_out_date = st.date_input("Date of Moving Out", value=datetime.today(), key="moving_out_date").strftime("%Y-%m-%d")
             
 
             # Find row index (add 2 because gspread is 1-indexed and row 1 is header)
@@ -207,7 +207,7 @@ if username in user_dict: # check authentication
             col_out = headers.index("moving_out_date") + 1
             # Update cells directly
             worksheet2.update_cell(row_index, col_out, moving_out_date)
-                      
+            
             recieves, _ = get_final_investments(df_itemdata, df_cumsum, name)
             col_recv = headers.index("recieves") + 1
             worksheet2.update_cell(row_index, col_recv, recieves)
