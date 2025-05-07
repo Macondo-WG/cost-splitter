@@ -67,7 +67,7 @@ if username in user_dict: # check authentication
             mask = [name in i for i in df_itemdata.split_among.tolist()]
             no_members = 3 # assume number of WG members stays same
             
-            moving_out_date = df_cumsum.loc[df_cumsum['name'] == name, 'moving_out'].iloc[0]
+            moving_out_date = df_cumsum.loc[df_cumsum['name'] == name, 'moving_out_date'].iloc[0]
             st.write('moving_out_date' , moving_out_date) #debug
 
             if moving_out_date is not 0:
