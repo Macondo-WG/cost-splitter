@@ -58,6 +58,7 @@ if username in user_dict: # check authentication
         list_current_names = df_cumsum.name.to_list() 
         
 
+
         #### DEFINE FUNCTION TO CALCULATE LOSS IN VALUE OF EXPENSES OVER YEARS  
         def get_final_investments(df_itemdata, df_cumsum, name):
             '''selects all items in which <name> participated. counts years from day of purchase until day of moving out. 
@@ -80,9 +81,7 @@ if username in user_dict: # check authentication
 
         st.markdown("""
         ### Create New Purchase Entries
-
                     """)
-
         item = st.text_input("Item", key="item")
         cost = st.number_input("Cost (€)", format="%.2f", key="cost")
         date_of_purchase = st.date_input("Date of Purchase", value=datetime.today(), key="date_of_purchase")
@@ -124,8 +123,6 @@ if username in user_dict: # check authentication
         st.markdown("""
         ### Create New User
                     """)
-        
-
         if "show_new_user_form" not in st.session_state:
             st.session_state.show_new_user_form = False
 
@@ -169,6 +166,37 @@ if username in user_dict: # check authentication
                 st.session_state["mov_in"] = ""
                 st.session_state["replaces"] = ""
 
+
+        ### When member moves out call
+        st.markdown("""
+        ### Create New User
+                    """)
+        
+        if "user2move_out_form" not in st.session_state:
+            st.session_state.user2move_out_form = False
+
+        if st.button('Moves Out'):
+            st.session_state.user2move_out_form = True
+
+        if st.session_state.user2move_out_form: 
+            name = st.selectbox("Member to Move Out", list_current_names )
+            moving_out_date = st.date_input("Date of Moving Out", value=datetime.today(), key="moving_out_date").strftime("%Y-%m-%d"),
+            
+
+            # Find row index (add 2 because gspread is 1-indexed and row 1 is header)
+            row_index = df_cumsum[df_cumsum['name'] == name].index[0] + 2
+            # Get column indices (also 1-indexed)
+            headers = df_cumsum.columns.tolist()
+            col_out = headers.index("moving_out_date") + 1
+            # Update cells directly
+            worksheet2.update_cell(row_index, col_out, moving_out_date)
+                      
+            recieves, _ = get_final_investments(df_itemdata, df_cumsum, name)
+            col_recv = headers.index("recieves") + 1
+            worksheet2.update_cell(row_index, col_recv, recieves)
+
+            st.success(f"✅ {name} moves-out date and receives {recieves}.")
+        
         if st.button("Logout"):
             st.logout()        
 
