@@ -1,5 +1,6 @@
 
 import streamlit as st
+import streamlit as st
 import bcrypt
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
@@ -120,7 +121,7 @@ if st.button('New Member'):
 if st.session_state.show_new_user_form:
     name = st.text_input("Name New Member")
     mov_in = st.date_input("Date of Moving In")  # Default None removed
-    replaces = st.selectbox("Previous Member", list_current_names + ['Add New Member'])
+    replaces = st.selectbox("Previous Member", list_current_names + ['Add Previous Member Manually'])
 
     # Create text input for user entry
     if replaces == "Add Previous Member Manually": 
