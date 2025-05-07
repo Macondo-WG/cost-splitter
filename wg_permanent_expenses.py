@@ -78,7 +78,7 @@ if username in user_dict: # check authentication
         ### button to reset form
         def on_click(inputs):
             for input in inputs:
-                st.session_state.input = ""
+                st.session_state[str(input)] = ""
 
 
 
@@ -174,7 +174,8 @@ if username in user_dict: # check authentication
                 st.success("✅ Entry saved!")
                 st.balloons()
 
-            st.button("Clear", on_click=on_click(['name', 'mov_in', 'replaces']))
+            if st.button("Clear Entries" ):
+                on_click(['name', 'mov_in', 'replaces'])
                 
 
 
