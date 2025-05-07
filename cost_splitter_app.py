@@ -1,4 +1,3 @@
-
 import streamlit as st
 import bcrypt
 import gspread
@@ -22,7 +21,7 @@ data = worksheet1.get_all_records()
 df_itemdata = pd.DataFrame(data)
 
 worksheet2 = spreadsheet.get_worksheet(1) 
-cumsum = worksheet1.get_all_records()
+cumsum = worksheet2.get_all_records()
 df_cumsum = pd.DataFrame(cumsum)
 list_current_names = df_cumsum.name.to_list()
 
