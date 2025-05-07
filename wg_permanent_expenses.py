@@ -76,8 +76,8 @@ if username in user_dict: # check authentication
                 years = [round(i.days/365, 2) for i in time_diffs]
                 
                 costs = pd.to_numeric(df_itemdata.cost[mask], errors='coerce')
-                st.write(costs.dtype, costs)
-                #rest_value_item = costs * np.power(np.ones_like(costs)*(1 - 0.01), years)/no_members
+                st.write(type(costs), costs)
+                rest_value_item = costs * np.power(np.ones(len(costs))*(1 - 0.01), years)/no_members
 
                 #rest_value_sum = rest_value_item.sum()
 
