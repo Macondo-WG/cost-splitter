@@ -169,7 +169,7 @@ if username in user_dict: # check authentication
 
         ### When member moves out call
         st.markdown("""
-        ### Create New User
+        ### Billing
                     """)
         
         if "user2move_out_form" not in st.session_state:
