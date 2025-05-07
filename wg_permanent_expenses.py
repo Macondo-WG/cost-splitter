@@ -136,7 +136,7 @@ if username in user_dict: # check authentication
 
             # Create text input for user entry
             if replaces == "Add Previous Member Manually": 
-                replaces = st.text_input("Enter New Member", key="replaces")
+                replaces = st.text_input("Enter New Member", key="replaces_manual")
 
             # Continue logic if fields are filled
             if name and mov_in and replaces:
