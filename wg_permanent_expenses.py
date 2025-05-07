@@ -76,12 +76,9 @@ if username in user_dict: # check authentication
             return rest_value_sum, rest_value_item
 
         ### button to reset form
-        def on_click(inputs):
-            for input in inputs:
-                st.session_state[str(input)] = ""
-
-
-
+        #def on_click(inputs):
+        #    for input in inputs:
+        #        st.session_state[str(input)] = ""
         #    st.session_state["item"] = ""
         #    st.session_state["cost"] = ""
         #    st.session_state["date_of_purchase"] = "" 
