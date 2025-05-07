@@ -71,8 +71,9 @@ if username in user_dict: # check authentication
             st.write('moving_out_date' , moving_out_date) #debug
 
             if moving_out_date is not '0':
-
-                years = [round(i.days/365, 2) for i in datetime.datetime.strptime(moving_out_date, '%Y-%m-%d').date() - datetime.datetime.strptime(df_itemdata.date_of_purchase[mask], '%Y-%m-%d').date() ]
+                time_diffs =  datetime.datetime.strptime(moving_out_date, '%Y-%m-%d').date() - datetime.datetime.strptime(df_itemdata.date_of_purchase[mask], '%Y-%m-%d').date()
+                st.write(time_diffs, type(time_diffs),type(time_diffs[0]))
+                years = [round(i.days/365, 2) for i in time_diffs]
             
                 rest_value_item = df_itemdata.cost[mask] * np.power(np.ones_like(df_itemdata.cost[mask])*(1 - 0.01), years)/no_members
 
