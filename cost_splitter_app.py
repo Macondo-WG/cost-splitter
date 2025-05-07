@@ -120,10 +120,10 @@ if st.button('New Member'):
 if st.session_state.show_new_user_form:
     name = st.text_input("Name New Member")
     mov_in = st.date_input("Date of Moving In")  # Default None removed
-    replaces = st.selectbox("Previous Member", list_current_names + ['Add New Member'])
+    replaces = st.selectbox("Previous Member", list_current_names + [None, 'Add New Member'])
 
     # Create text input for user entry
-    if replaces == "Add New Member": 
+    if replaces == "Add Previous Member Manually": 
         replaces = st.text_input("Enter New Member")
 
     # Continue logic if fields are filled
@@ -140,8 +140,9 @@ if st.button("Add Member to List"):
         "moving_out_date" : mov_out,
         "recieves": 0,
     }
-    df_cumsum.loc[len(df_cumsum)] = [name, mov_in, owes, mov_out, recieves ]
-    #df_itemdata = pd.concat([df_itemdata, pd.DataFrame([new_row])], ignore_index=True)
+
+    #df_cumsum.loc[len(df_cumsum)] = [name, mov_in, owes, mov_out, recieves ]
+    df_cumsum = pd.concat([df_cumsum, pd.DataFrame([new_row])], ignore_index=True)
 
     # Upload back to Google Sheets
     worksheet2.clear()
