@@ -1,32 +1,84 @@
+
 import streamlit as st
+import bcrypt
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
+import pandas as pd
+import numpy as np
 from datetime import datetime
+
+
+
 
 # Google auth setup
 scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
 creds = ServiceAccountCredentials.from_json_keyfile_dict(st.secrets["gcp_service_account"], scope)
 client = gspread.authorize(creds)
 
-# Connect to Google Sheet
-sheet = client.open("PermanentExpenses").sheet1
+# Connect to sheet and get data as a DataFrame
+spreadsheet = client.open("PermanentExpenses")
+worksheet1 = spreadsheet.sheet1
+data = worksheet1.get_all_records()
+df_itemdata = pd.DataFrame(data)
 
-st.title("🏠 Household Cost Tracker")
+worksheet2 = spreadsheet.sheet2
+cumsum = worksheet1.get_all_records()
+df_cumsum = pd.DataFrame(cumsum)
+list_current_names = df_cumsum.name.to_list()
 
-# Input fields
-name = st.selectbox("Name", ["Alice", "Bob", "Carol", "Dave"])
+
+def get_final_investments(df_itemdata, df_cumsum, name):
+    '''selects all items in which <name> participated. counts years from day of purchase until day of moving out. 
+    calculates negative compund interest with a value decrease of 10% p.a.'''
+    no_members = 3 # assume number of WG members stays same
+    mask = [name in i for i in df_itemdata.split_among.tolist()]
+    
+    years = [round(i.days/365, 2) for i in df_cumsum.moving_out_date[mask] - df_itemdata.bought_on[mask]]
+
+    rest_value_item = df_itemdata.cost[mask] * np.power(np.ones_like(df_itemdata.cost[mask])*(1 - 0.01), years)/no_members
+
+    rest_value_sum = rest_value_item.sum()
+
+    return rest_value_sum, rest_value_item
+    
+##### CREATE NEW USER
+new_user_button = st.button('New Member')
+if new_user_button:
+    name =  st.text_input("Name New Member")
+    mov_in = st.date_input("Date of Moving In", value=None) ### YYYY-MM-DD
+    replaces = st.selectbox("Previous Member", list_current_names)
+    owes, _ = get_final_investments(df_itemdata, df_cumsum, replaces)
+    recieves = 0
+    mov_out = 0
+    df_cumsum.loc[len(df_cumsum)] = [name, mov_in, owes, mov_out, recieves ]
+
+
+###### CREATE NEW PURCHASE ENTRIES
 item = st.text_input("Item")
-amount = st.number_input("Amount (€)", min_value=0.0, format="%.2f")
-date = st.date_input("Date", value=datetime.today())
-split_among = st.multiselect('Split among', ["Alice", "Bob", "Carol", "Dave"])
+cost = st.number_input("Amount (€)", min_value=0.0, format="%.2f")
+date_of_purchase = st.date_input("Date", value=datetime.today())
+bought_by = st.selectbox("Name", list_current_names)
+split_among = st.multiselect('Split among', )
 split_among = ", ".join(split_among)
 
+# Add a new row and update the sheet
+# headers in sheet: item	cost	date_of_purchase	bought_by	split_among
 if st.button("Submit Expense"):
-    if name and item and amount:
-        sheet.append_row([name, item, amount,  date.strftime("%Y-%m-%d"), split_among])
-        st.success("💾 Cost saved to Google Sheets!")
+    new_row = {
+        "Item": item,
+        "Amount": cost,
+        "Date": date_of_purchase.strftime("%Y-%m-%d"),
+        "Name": bought_by,
+        "Split_Among" : split_among
+    }
+    df_itemdata = pd.concat([df_itemdata, pd.DataFrame([new_row])], ignore_index=True)
 
-# Optionally show existing entries
-if st.checkbox("Show existing entries"):
-    records = sheet.get_all_records()
-    st.write(records)
+    # Upload back to Google Sheets
+    worksheet1.clear()
+    worksheet1.update([df_itemdata.columns.values.tolist()] + df_itemdata.values.tolist())
+    st.success("✅ Entry saved using Pandas!")
+
+# Optionally show table
+if st.checkbox("Show all entries"):
+    st.dataframe(df_itemdata)
+
