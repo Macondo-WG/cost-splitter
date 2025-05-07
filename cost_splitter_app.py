@@ -27,9 +27,6 @@ df_cumsum = pd.DataFrame(cumsum)
 #list_current_names = df_cumsum.name.to_list()
 list_current_names = ['Leon', 'Robin', 'Alessia']
 
-print("df itemdata cols", df_itemdata.columns)
-print("df cumum cols", df_cumsum.columns)
-
 
 def get_final_investments(df_itemdata, df_cumsum, name):
     '''selects all items in which <name> participated. counts years from day of purchase until day of moving out. 
@@ -69,11 +66,11 @@ split_among = ", ".join(split_among)
 # headers in sheet: item	cost	date_of_purchase	bought_by	split_among
 if st.button("Submit Expense"):
     new_row = {
-        "Item": item,
-        "Amount": cost,
-        "Date": date_of_purchase.strftime("%Y-%m-%d"),
-        "Name": bought_by,
-        "Split_Among" : split_among
+        "item": item,
+        "cost": cost,
+        "date_of_purchase": date_of_purchase.strftime("%Y-%m-%d"),
+        "bought_by": bought_by,
+        "split_among" : split_among
     }
     df_itemdata = pd.concat([df_itemdata, pd.DataFrame([new_row])], ignore_index=True)
 
