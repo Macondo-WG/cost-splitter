@@ -217,12 +217,16 @@ if username in user_dict: # check authentication
                 col_out = headers.index("moving_out_date") + 1
                 # Update cells directly
                 worksheet2.update_cell(row_index, col_out, moving_out_date)
-                
+
+                ###degub 
+                moving_out_date = df_cumsum.loc[df_cumsum['name'] == name, 'moving_out_date'].iloc[0]
+                moving_out_date = pd.to_datetime(moving_out_date, format="%Y-%m-%d") 
+                st.write('moving out date', moving_out_date, type(moving_out_date))
                 recieves, _ = get_final_investments(df_itemdata, df_cumsum, name)
                 col_recv = headers.index("recieves") + 1
                 worksheet2.update_cell(row_index, col_recv, str(recieves))
 
-                st.success(f"✅ {name} moves-out date and receives {recieves}.")
+                st.success(f"✅ {name} moves-out on {moving_out_date} and receives {recieves}.")
             
         #if st.button("Clear Entries"):
         #    for key in ["name"]:
