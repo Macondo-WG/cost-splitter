@@ -110,17 +110,17 @@ if username in user_dict: # check authentication
             else:
                 return '0','0'
 
-        def append_tenant_bill(worksheet, df_bills, tenant_name=None):
-            # Optional: add a header separator row
-            if tenant_name:
-                worksheet.append_row([f"--- {tenant_name}'s Bill ---"])
-            # Optional: blank row separator
-            worksheet.append_row([""])
-            # Add headers
-            worksheet.append_row(df_bills.columns.tolist())
-            # Add data
-            for row in df_bills.values.tolist():
-                worksheet.append_row(row)
+        #def append_tenant_bill(worksheet, df_bills, tenant_name=None):
+        #    # Optional: add a header separator row
+        #    if tenant_name:
+        #        worksheet.append_row([f"--- {tenant_name}'s Bill ---"])
+        #    # Optional: blank row separator
+        #    worksheet.append_row([""])
+        #    # Add headers
+        #    worksheet.append_row(df_bills.columns.tolist())
+        #    # Add data
+        #    for row in df_bills.values.tolist():
+        #        worksheet.append_row(row)
             
 
 
@@ -245,7 +245,7 @@ if username in user_dict: # check authentication
                 col_recv = headers.index("recieves") + 1
                 worksheet2.update_cell(row_index, col_recv, str(recieves))
 
-                append_tenant_bill(worksheet3, detailed_list, tenant_name=name)
+                #append_tenant_bill(worksheet3, detailed_list, tenant_name=name)
                 
                 st.success(f"✅ {name} moves-out on {moving_out_date.strftime("%Y-%m-%d")} and receives {recieves} €.")
                 st.markdown("Detailed list of expenses and loss of value:")
