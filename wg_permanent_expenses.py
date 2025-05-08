@@ -105,7 +105,7 @@ if username in user_dict: # check authentication
                 descrp = ['inherited from previous tenant']
                 for i in range(len(costs)):
                     descrp.append(f'share in purchased item {i + 1} ' )
-                    descrp.append('sum')
+                descrp.append('sum')
 
                 costs_to_print = round(costs/3, 2).to_list()
                 rest_value_item_to_print = rest_value_item.to_list()
