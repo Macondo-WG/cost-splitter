@@ -105,14 +105,17 @@ if username in user_dict: # check authentication
                 descrp = ['inherited from previous tenant']
                 for i in range(len(costs)):
                     descrp.append(f'share in purchased item {i + 1} ' )
+                    descrp.append('sum')
 
-                
+                costs_to_print = round(costs/3, 2).to_list()
                 detailed_list = {'expense': descrp, 
-                                 'initial expenses': round(costs/3, 2).to_list() ,
+                                 'initial expenses': costs_to_print ,
                                  'rest after value loss': rest_value_item.to_list()}
                 detailed_list['initial expenses'].insert(0, inherited)
+                detailed_list['initial expenses'].append(sum(costs_to_print, inherited))
                 #st.write(len( detailed_list['initial expenses']), detailed_list['initial expenses'])
                 detailed_list['rest after value loss'].insert(0, rest_of_inherited)
+                detailed_list['rest after value loss'].append(sum(rest_of_inherited, rest_value_item))
                 #st.write(len( detailed_list['rest after value loss']), detailed_list['rest after value loss'])
 
                 return str(round(rest_value_sum, 2)),  pd.DataFrame(detailed_list)
@@ -124,11 +127,11 @@ if username in user_dict: # check authentication
 
         def append_tenant_bill(worksheet, df_bills, tenant_name=None):
             '''function to print a summary bill of tenant to move out on the third worksheet'''
+            # row separator
+            worksheet.append_row(["===================================================================="])"])
+            
             if tenant_name:
                 worksheet.append_row([f"--- {tenant_name}'s Bill ---"])
-            # row separator
-            worksheet.append_row(["=================================="])
-
             # add headers
             worksheet.append_row(df_bills.columns.tolist())
             # add data
