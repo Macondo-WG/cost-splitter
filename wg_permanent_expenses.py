@@ -102,9 +102,13 @@ if username in user_dict: # check authentication
                 
                 rest_value_sum = rest_value_item.sum() + rest_of_inherited
                 
-                detailed_list = {'expense':['share in purchased items', 'inherited from previous tenant'], 'initial expenses': (costs/3).to_list() ,'rest after value loss': rest_value_item.to_list()}
+                detailed_list = {'expense':['share in purchased items', 'inherited from previous tenant'], 
+                                 'initial expenses': round(costs/3, 2).to_list() ,
+                                 'rest after value loss': rest_value_item.to_list()}
                 detailed_list['initial expenses'].append(inherited)
+                st.write(len( detailed_list['initial expenses']), detailed_list['initial expenses'])
                 detailed_list['rest after value loss'].append(rest_of_inherited)
+                st.write(len( detailed_list['rest after value loss']), detailed_list['rest after value loss'])
 
                 return str(round(rest_value_sum, 2)),  pd.DataFrame(detailed_list)
             else:
