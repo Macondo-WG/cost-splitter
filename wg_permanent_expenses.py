@@ -78,11 +78,13 @@ if username in user_dict: # check authentication
                 
                 # add inherited expenses but subtract loss of value
                 inherited = pd.to_numeric(df_cumsum.loc[df_cumsum['name'] == name, 'owes'].iloc[0], errors='coerce')
-                #st.write(type(inherited), inherited)
+                st.write(type(inherited), inherited)
+                
                 moving_in_date = df_cumsum.loc[df_cumsum['name'] == name, 'moving_in_date'].iloc[0]
                 years_in_wg = round((datetime.strptime(moving_out_date, '%Y-%m-%d') - datetime.strptime(moving_in_date, '%Y-%m-%d')).days/365, 2)
                 rest_of_inherited = inherited * (1-0.1)**years_in_wg/no_members
-
+                st.write(type(rest_of_inherited), rest_of_inherited)
+                
                 rest_value_sum = rest_value_item.sum() + rest_of_inherited
                 
                 return rest_value_sum, pd.concat([rest_value_item, pd.Series(rest_of_inherited)])
