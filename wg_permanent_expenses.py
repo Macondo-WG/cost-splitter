@@ -240,7 +240,7 @@ if username in user_dict: # check authentication
                 worksheet2.update_cell(row_index, col_recv, str(recieves))
 
                 st.success(f"✅ {name} moves-out on {moving_out_date.strftime("%Y-%m-%d")} and receives {recieves} €.")
-                st.success(f"✅ detailed list of expenses and loss of value: {detailed_list}")
+                st.write(f"✅ detailed list of expenses and loss of value: {detailed_list}")
 
         #if st.button("Clear Entries"):
         #    for key in ["name"]:
