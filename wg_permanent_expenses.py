@@ -78,7 +78,7 @@ if username in user_dict: # check authentication
                 
                 # add inherited expenses but subtract loss of value
                 inherited = pd.to_numeric(df_cumsum.loc[df_cumsum['name'] == name, 'owes'].iloc[0], errors='coerce')
-                st.write(type(inherited), inherited)
+                #st.write(type(inherited), inherited)
                 moving_in_date = df_cumsum.loc[df_cumsum['name'] == name, 'moving_in_date'].iloc[0]
                 years_in_wg = round((datetime.strptime(moving_out_date, '%Y-%m-%d') - datetime.strptime(moving_in_date, '%Y-%m-%d')).days/365, 2)
                 rest_of_inherited = inherited * (1-0.1)**years_in_wg/no_members
@@ -216,7 +216,7 @@ if username in user_dict: # check authentication
                 
                 recieves, _ = get_final_investments(df_itemdata, df_cumsum, name)
                 col_recv = headers.index("recieves") + 1
-                worksheet2.update_cell(row_index, col_recv, recieves)
+                worksheet2.update_cell(row_index, col_recv, float(recieves))
 
                 st.success(f"✅ {name} moves-out date and receives {recieves}.")
             
