@@ -104,7 +104,7 @@ if username in user_dict: # check authentication
                 
                 descrp = ['inherited from previous tenant']
                 for i in range(len(costs)):
-                    descrp.append('share in purchased item ', i )
+                    descrp.append(f'share in purchased item {i} ' )
 
                 
                 detailed_list = {'expense': descrp, 
