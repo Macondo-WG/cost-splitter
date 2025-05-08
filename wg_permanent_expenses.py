@@ -57,7 +57,7 @@ if username in user_dict: # check authentication
             df_cumsum = pd.DataFrame(columns=values_c[0])
         list_current_names = df_cumsum.name.to_list() 
         
-
+        worksheet3 = spreadsheet.get_worksheet(2)
 
         #### DEFINE FUNCTION TO CALCULATE LOSS IN VALUE OF EXPENSES OVER YEARS  
         def get_final_investments(df_itemdata, df_cumsum, name, moving_out_date=None):
@@ -102,7 +102,7 @@ if username in user_dict: # check authentication
                 
                 rest_value_sum = rest_value_item.sum() + rest_of_inherited
                 
-                detailed_list = {'initial expenses': (costs/3).to_list() ,'rest after value loss': rest_value_item.to_list()}
+                detailed_list = {'expense':['share in purchased items', 'inherited from previous tenant'], 'initial expenses': (costs/3).to_list() ,'rest after value loss': rest_value_item.to_list()}
                 detailed_list['initial expenses'].append(inherited)
                 detailed_list['rest after value loss'].append(rest_of_inherited)
 
@@ -110,18 +110,18 @@ if username in user_dict: # check authentication
             else:
                 return '0','0'
 
-        ### button to reset form
-        #def on_click(inputs):
-        #    for input in inputs:
-        #        st.session_state[str(input)] = ""
-        #    st.session_state["item"] = ""
-        #    st.session_state["cost"] = ""
-        #    st.session_state["date_of_purchase"] = "" 
-        #    st.session_state["bought_by"] = ""
-        #    st.session_state["split_among"] = ""
-        #    st.session_state["name"] = ""
-        #    st.session_state["mov_in"] = ""
-        #    st.session_state["replaces"] = ""    
+        def append_tenant_bill(worksheet, df_bills, tenant_name=None):
+            # Optional: add a header separator row
+            if tenant_name:
+                worksheet.append_row([f"--- {tenant_name}'s Bill ---"])
+            # Optional: blank row separator
+            worksheet.append_row([""])
+            # Add headers
+            worksheet.append_row(df_bills.columns.tolist())
+            # Add data
+            for row in df_bills.values.tolist():
+                worksheet.append_row(row)
+            
 
 
         ###### CREATE NEW PURCHASE ENTRIES
@@ -206,6 +206,8 @@ if username in user_dict: # check authentication
                     st.success(f"✅ {name} was registered and has an open payment to {replaces} of {owes} € !")
                     st.balloons()
 
+                    
+
             #if st.button("Clear Entries" ):
             #    on_click(['name', 'mov_in', 'replaces'])
                 
@@ -243,6 +245,8 @@ if username in user_dict: # check authentication
                 col_recv = headers.index("recieves") + 1
                 worksheet2.update_cell(row_index, col_recv, str(recieves))
 
+                append_tenant_bill(worksheet3, detailed_list, tenant_name=name)
+                
                 st.success(f"✅ {name} moves-out on {moving_out_date.strftime("%Y-%m-%d")} and receives {recieves} €.")
                 st.markdown("Detailed list of expenses and loss of value:")
                 st.write(detailed_list)
