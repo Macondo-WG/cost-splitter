@@ -119,15 +119,19 @@ if username in user_dict: # check authentication
             else:
                 return '0','0'
 
+
+
+
         def append_tenant_bill(worksheet, df_bills, tenant_name=None):
-            # Optional: add a header separator row
+            '''function to print a summary bill of tenant to move out on the third worksheet'''
             if tenant_name:
                 worksheet.append_row([f"--- {tenant_name}'s Bill ---"])
-            # Optional: blank row separator
-            worksheet.append_row([""])
-            # Add headers
+            # row separator
+            worksheet.append_row(["=================================="])
+
+            # add headers
             worksheet.append_row(df_bills.columns.tolist())
-            # Add data
+            # add data
             for row in df_bills.values.tolist():
                 worksheet.append_row(row)
             
