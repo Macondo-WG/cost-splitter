@@ -67,7 +67,8 @@ if username in user_dict: # check authentication
             mask = [name in i for i in df_itemdata.split_among.tolist()]
             no_members = 3 # assume number of WG members stays same
             
-            
+            st.write('names in cumusm', df_cumsum['name'])
+
             if moving_out_date is not None: # passed as argument during billing
                 st.write('registered passed on moving out date')
                 moving_out_date = moving_out_date
@@ -199,7 +200,7 @@ if username in user_dict: # check authentication
                     # Upload back to Google Sheets
                     worksheet2.clear()
                     worksheet2.update([df_cumsum.columns.values.tolist()] + df_cumsum.values.tolist())
-                    st.success("✅ {name} was registered and has an open payment to {replaces} of {owes} € !")
+                    st.success(f"✅ {name} was registered and has an open payment to {replaces} of {owes} € !")
                     st.balloons()
 
             #if st.button("Clear Entries" ):
