@@ -79,7 +79,9 @@ if username in user_dict: # check authentication
             if moving_out_date is not '0':
 
                 #time_diffs = pd.to_datetime(moving_out_date, format="%Y-%m-%d")  -  pd.to_datetime(df_itemdata.date_of_purchase[mask], format="%Y-%m-%d")
-                time_diffs = pd.to_datetime(moving_out_date, format="%Y-%m-%d") -  pd.to_datetime(df_itemdata.date_of_purchase[mask], format="%Y-%m-%d")
+                #fomrat to pd.datetimearray
+                moving_out_date = pd.to_datetime(moving_out_date, format="%Y-%m-%d") 
+                time_diffs = moving_out_date-  pd.to_datetime(df_itemdata.date_of_purchase[mask], format="%Y-%m-%d")
                 years = [round(i.days/365, 2) for i in time_diffs]
                 costs = pd.to_numeric(df_itemdata.cost[mask], errors='coerce')
                 st.write('costs', costs, type(costs))
@@ -90,7 +92,9 @@ if username in user_dict: # check authentication
                 st.write('inherited', inherited.dtype, inherited)
                 
                 moving_in_date = df_cumsum.loc[df_cumsum['name'] == name, 'moving_in_date'].iloc[0]
-                years_in_wg = round((datetime.strptime(moving_out_date, '%Y-%m-%d') - datetime.strptime(moving_in_date, '%Y-%m-%d')).days/365, 2)
+                # format t pd.datetimearray
+                moving_in_date = pd.to_datetime(moving_in_date, format="%Y-%m-%d")
+                years_in_wg = round((moving_out_date - moving_in_date).days/365, 2)
                 rest_of_inherited = inherited * (1-0.1)**years_in_wg/no_members
                 st.write(type(rest_of_inherited), rest_of_inherited)
                 
