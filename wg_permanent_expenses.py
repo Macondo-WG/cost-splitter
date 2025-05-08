@@ -102,10 +102,17 @@ if username in user_dict: # check authentication
                 
                 rest_value_sum = rest_value_item.sum() + rest_of_inherited
                 
+                #descrp = ['inherited from previous tenant']
+                #for i in range(len(costs)):
+                #    descrp.append(f'share in purchased item {i + 1} ' )
+                #descrp.append('sum')
+
                 descrp = ['inherited from previous tenant']
-                for i in range(len(costs)):
-                    descrp.append(f'share in purchased item {i + 1} ' )
+                item_indices = df_itemdata.loc[mask, 'index'].tolist()
+                for idx in item_indices:
+                    descrp.append(f'share in purchased item {idx}')
                 descrp.append('sum')
+
 
                 costs_to_print = round(costs/3, 2).to_list()
                 rest_value_item_to_print = rest_value_item.to_list()
@@ -166,10 +173,12 @@ if username in user_dict: # check authentication
                 "split_among" : split_among
             }
             df_itemdata = pd.concat([df_itemdata, pd.DataFrame([new_row])], ignore_index=True)
+            df_itemdata.insert(0, 'index', range(1, len(df_itemdata) + 1))
 
             # Upload back to Google Sheets
             worksheet1.clear()
             worksheet1.update([df_itemdata.columns.values.tolist()] + df_itemdata.values.tolist())
+            
             st.success("✅ Entry saved!")
             st.balloons()
            
