@@ -214,7 +214,7 @@ if username in user_dict: # check authentication
 
         if st.session_state.user2move_out_form: 
             name = st.selectbox("Member to Move Out", list_current_names )
-            moving_out_date = st.date_input("Date of Moving Out", value=datetime.today(), key="moving_out_date").strftime("%Y-%m-%d")
+            moving_out_date = st.date_input("Date of Moving Out", value=datetime.today(), key="moving_out_date")
             
             if st.button("bill"):
                 # Find row index (add 2 because gspread is 1-indexed and row 1 is header)
@@ -223,7 +223,7 @@ if username in user_dict: # check authentication
                 headers = df_cumsum.columns.tolist()
                 col_out = headers.index("moving_out_date") + 1
                 # Update cells directly
-                worksheet2.update_cell(row_index, col_out, moving_out_date)
+                worksheet2.update_cell(row_index, col_out, moving_out_date.strftime("%Y-%m-%d"))
 
                 ###degub 
                 #moving_out_date = df_cumsum.loc[df_cumsum['name'] == name, 'moving_out_date'].iloc[0]
@@ -233,7 +233,7 @@ if username in user_dict: # check authentication
                 col_recv = headers.index("recieves") + 1
                 worksheet2.update_cell(row_index, col_recv, str(recieves))
 
-                st.success(f"✅ {name} moves-out on {moving_out_date} and receives {recieves}.")
+                st.success(f"✅ {name} moves-out on {moving_out_date.strftime("%Y-%m-%d")} and receives {recieves} €.")
             
         #if st.button("Clear Entries"):
         #    for key in ["name"]:
