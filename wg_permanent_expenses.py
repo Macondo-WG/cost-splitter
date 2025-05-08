@@ -108,14 +108,15 @@ if username in user_dict: # check authentication
                     descrp.append('sum')
 
                 costs_to_print = round(costs/3, 2).to_list()
+                rest_value_item_to_print = rest_value_item.to_list()
                 detailed_list = {'expense': descrp, 
                                  'initial expenses': costs_to_print ,
-                                 'rest after value loss': rest_value_item.to_list()}
+                                 'rest after value loss': rest_value_item_to_print}
                 detailed_list['initial expenses'].insert(0, inherited)
                 detailed_list['initial expenses'].append(sum(costs_to_print, inherited))
                 #st.write(len( detailed_list['initial expenses']), detailed_list['initial expenses'])
                 detailed_list['rest after value loss'].insert(0, rest_of_inherited)
-                detailed_list['rest after value loss'].append(sum(rest_of_inherited, rest_value_item))
+                detailed_list['rest after value loss'].append(sum(rest_of_inherited, rest_value_item_to_print))
                 #st.write(len( detailed_list['rest after value loss']), detailed_list['rest after value loss'])
 
                 return str(round(rest_value_sum, 2)),  pd.DataFrame(detailed_list)
