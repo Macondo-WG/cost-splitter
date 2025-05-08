@@ -68,10 +68,12 @@ if username in user_dict: # check authentication
             no_members = 3 # assume number of WG members stays same
             
             
-            if moving_out_date is not None:
+            if moving_out_date is not None: # passed as argument during billing
                 moving_out_date = moving_out_date
-            else:
-                moving_out_date = df_cumsum.loc[df_cumsum['name'] == name, 'moving_out_date'].iloc[0]#
+            elif name in df_cumsum.loc[df_cumsum['name']]: # if previous tenant in list
+                moving_out_date = df_cumsum.loc[df_cumsum['name'] == name, 'moving_out_date'].iloc[0]
+            else: # if no previous tenant, one does not owe anything
+                moving_out_date = '0'
 
             if moving_out_date is not '0':
 
@@ -149,9 +151,9 @@ if username in user_dict: # check authentication
             
         
 
-        ##### CREATE NEW USER
+        ##### CREATE NEW MEMBER
         st.markdown("""
-        ### Create New User
+        ### Create New Member
                     """)
         if "show_new_user_form" not in st.session_state:
             st.session_state.show_new_user_form = False
