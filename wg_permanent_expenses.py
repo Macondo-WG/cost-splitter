@@ -107,6 +107,7 @@ if username in user_dict: # check authentication
                 #    descrp.append(f'share in purchased item {i + 1} ' )
                 #descrp.append('sum')
 
+                st.write('index list', df_itemdata.loc[mask, 'index'].tolist())
                 descrp = ['inherited from previous tenant']
                 item_indices = df_itemdata.loc[mask, 'index'].tolist()
                 for idx in item_indices:
