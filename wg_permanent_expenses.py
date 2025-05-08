@@ -226,10 +226,10 @@ if username in user_dict: # check authentication
                 worksheet2.update_cell(row_index, col_out, moving_out_date)
 
                 ###degub 
-                moving_out_date = df_cumsum.loc[df_cumsum['name'] == name, 'moving_out_date'].iloc[0]
-                moving_out_date = pd.to_datetime(moving_out_date, format="%Y-%m-%d") 
+                #moving_out_date = df_cumsum.loc[df_cumsum['name'] == name, 'moving_out_date'].iloc[0]
+                #moving_out_date = pd.to_datetime(moving_out_date, format="%Y-%m-%d") 
                 st.write('moving out date', moving_out_date, type(moving_out_date))
-                recieves, _ = get_final_investments(df_itemdata, df_cumsum, name)
+                recieves, _ = get_final_investments(df_itemdata, df_cumsum, name, moving_out_date=moving_out_date)
                 col_recv = headers.index("recieves") + 1
                 worksheet2.update_cell(row_index, col_recv, str(recieves))
 
