@@ -239,7 +239,9 @@ if username in user_dict: # check authentication
                 col_recv = headers.index("recieves") + 1
                 worksheet2.update_cell(row_index, col_recv, str(recieves))
 
-                st.success(f"✅ {name} moves-out on {moving_out_date.strftime("%Y-%m-%d")} and receives {recieves} €. \n detailed list of expenses and loss of value:", detailed_list)
+                st.success(f"✅ {name} moves-out on {moving_out_date.strftime("%Y-%m-%d")} and receives {recieves} €.")
+                st.markdown("Detailed list of expenses and loss of value:")
+                st.write(detailed_list)
                 
 
         #if st.button("Clear Entries"):
