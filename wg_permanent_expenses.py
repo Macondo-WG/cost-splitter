@@ -69,11 +69,13 @@ if username in user_dict: # check authentication
             
             
             if moving_out_date is not None: # passed as argument during billing
+                st.write('registered passed on moving out date')
                 moving_out_date = moving_out_date
             elif name in df_cumsum['name']: # if previous tenant in list, then one can owe
                 st.write('name in list')
                 moving_out_date = df_cumsum.loc[df_cumsum['name'] == name, 'moving_out_date'].iloc[0]
             else: # if no previous tenant, one does not owe anything
+                st.write('no previous tenant')
                 moving_out_date = '0'
 
             if moving_out_date is not '0':
@@ -84,19 +86,19 @@ if username in user_dict: # check authentication
                 time_diffs = moving_out_date-  pd.to_datetime(df_itemdata.date_of_purchase[mask], format="%Y-%m-%d")
                 years = [round(i.days/365, 2) for i in time_diffs]
                 costs = pd.to_numeric(df_itemdata.cost[mask], errors='coerce')
-                st.write('costs', costs, type(costs))
+                #st.write('costs', costs, type(costs))
                 rest_value_item = round(costs * np.power(np.ones(len(costs))*(1 - 0.1), years)/no_members, 2)
                 
                 ### add inherited expenses but subtract loss of value
                 inherited = pd.to_numeric(df_cumsum.loc[df_cumsum['name'] == name, 'owes'].iloc[0], errors='coerce')
-                st.write('inherited', inherited.dtype, inherited)
+                #st.write('inherited', inherited.dtype, inherited)
                 
                 moving_in_date = df_cumsum.loc[df_cumsum['name'] == name, 'moving_in_date'].iloc[0]
                 # format t pd.datetimearray
                 moving_in_date = pd.to_datetime(moving_in_date, format="%Y-%m-%d")
                 years_in_wg = round((moving_out_date - moving_in_date).days/365, 2)
                 rest_of_inherited = inherited * (1-0.1)**years_in_wg/no_members
-                st.write(type(rest_of_inherited), rest_of_inherited)
+                #st.write(type(rest_of_inherited), rest_of_inherited)
                 
                 rest_value_sum = rest_value_item.sum() + rest_of_inherited
                 
@@ -197,7 +199,7 @@ if username in user_dict: # check authentication
                 # Upload back to Google Sheets
                 worksheet2.clear()
                 worksheet2.update([df_cumsum.columns.values.tolist()] + df_cumsum.values.tolist())
-                st.success("✅ Entry saved!")
+                st.success("✅ {name} was registered and has an open payment to {replaces} of {owes} € !")
                 st.balloons()
 
             #if st.button("Clear Entries" ):
