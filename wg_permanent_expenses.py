@@ -75,6 +75,7 @@ if username in user_dict: # check authentication
                 time_diffs = pd.to_datetime(moving_out_date, format="%Y-%m-%d")  -  pd.to_datetime(df_itemdata.date_of_purchase[mask], format="%Y-%m-%d")
                 years = [round(i.days/365, 2) for i in time_diffs]
                 costs = pd.to_numeric(df_itemdata.cost[mask], errors='coerce')
+                st.write('costs', costs, type(costs))
                 rest_value_item = round(costs * np.power(np.ones(len(costs))*(1 - 0.1), years)/no_members, 2)
                 
                 # add inherited expenses but subtract loss of value
