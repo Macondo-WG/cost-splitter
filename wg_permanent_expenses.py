@@ -68,13 +68,13 @@ if username in user_dict: # check authentication
             no_members = 3 # assume number of WG members stays same
             
             if moving_out_date is not None: # passed as argument during billing
-                st.write('registered passed on moving out date')
+                st.write('Debug info: roger roger: recieved moving_out_date')
                 moving_out_date = moving_out_date
             elif name in df_cumsum['name'].to_list(): # if previous tenant in list, then one can owe
-                st.write('name in list')
+                st.write("Debug info: roger roger: previous tenant's name in list")
                 moving_out_date = df_cumsum.loc[df_cumsum['name'] == name, 'moving_out_date'].iloc[0]
             elif name not in df_cumsum['name'].to_list(): # if no previous tenant, one does not owe anything
-                st.write('no previous tenant')
+                st.write('Debug info: no previous tenant')
                 moving_out_date = '0'
 
             if moving_out_date is not '0':
@@ -247,13 +247,13 @@ if username in user_dict: # check authentication
         if "user2move_out_form" not in st.session_state:
             st.session_state.user2move_out_form = False
 
-        if st.button('Open Form Member to Move Out'):
+        if st.button('Open Form for Member to Move Out'):
             st.session_state.user2move_out_form = True
 
         if st.session_state.user2move_out_form: 
             name = st.selectbox("Member to Move Out", list_current_names )
             moving_out_date = st.date_input("Date of Moving Out", value=datetime.today(), key="moving_out_date")
-            moving_out_date_str = moving_out_date.strftime("%Y-%m-%d")
+            moving_out_date_str = "'" + moving_out_date.strftime("%Y-%m-%d")
             
             if st.button("Bill"):
                 # Find row index (add 2 because gspread is 1-indexed and row 1 is header)
