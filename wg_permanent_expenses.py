@@ -128,7 +128,7 @@ if username in user_dict: # check authentication
         def append_tenant_bill(worksheet, df_bills, tenant_name=None):
             '''function to print a summary bill of tenant to move out on the third worksheet'''
             # row separator
-            worksheet.append_row(["===================================================================="])"])
+            worksheet.append_row(["===================================================================="])
             
             if tenant_name:
                 worksheet.append_row([f"--- {tenant_name}'s Bill ---"])
