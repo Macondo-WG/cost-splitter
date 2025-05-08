@@ -67,7 +67,7 @@ if username in user_dict: # check authentication
             mask = [name in i for i in df_itemdata.split_among.tolist()]
             no_members = 3 # assume number of WG members stays same
             
-            st.write('names in cumusm', df_cumsum['name'])
+            st.write('names', name, type(name))
 
             if moving_out_date is not None: # passed as argument during billing
                 st.write('registered passed on moving out date')
@@ -182,7 +182,7 @@ if username in user_dict: # check authentication
             if st.button("Add Member to List"):
                  # Continue logic if fields are filled
                 if name and mov_in and replaces:
-                    owes, _ = get_final_investments(df_itemdata, df_cumsum, replaces)
+                    owes, _ = get_final_investments(df_itemdata, df_cumsum, str(replaces))
                     mov_out = 0
                     recieves = 0
 
