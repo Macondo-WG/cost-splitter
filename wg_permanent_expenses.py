@@ -102,12 +102,6 @@ if username in user_dict: # check authentication
                 
                 rest_value_sum = rest_value_item.sum() + rest_of_inherited
                 
-                #descrp = ['inherited from previous tenant']
-                #for i in range(len(costs)):
-                #    descrp.append(f'share in purchased item {i + 1} ' )
-                #descrp.append('sum')
-
-                st.write('index list', df_itemdata.loc[mask, 'index'].tolist())
                 descrp = ['inherited from previous tenant']
                 item_indices = df_itemdata.loc[mask, 'index'].tolist()
                 for idx in item_indices:
@@ -148,6 +142,9 @@ if username in user_dict: # check authentication
             # add data
             for row in df_bills.values.tolist():
                 worksheet.append_row(row)
+            # confirm print    
+            st.success("✅ A copy of the bill has been attached to worksheet3 of the associated google sheet")
+
             
 
 
@@ -250,12 +247,13 @@ if username in user_dict: # check authentication
         if "user2move_out_form" not in st.session_state:
             st.session_state.user2move_out_form = False
 
-        if st.button('Moves Out'):
+        if st.button('Open Form Member to Move Out'):
             st.session_state.user2move_out_form = True
 
         if st.session_state.user2move_out_form: 
             name = st.selectbox("Member to Move Out", list_current_names )
             moving_out_date = st.date_input("Date of Moving Out", value=datetime.today(), key="moving_out_date")
+            moving_out_date_str = moving_out_date.strftime("%Y-%m-%d")
             
             if st.button("Bill"):
                 # Find row index (add 2 because gspread is 1-indexed and row 1 is header)
@@ -264,7 +262,7 @@ if username in user_dict: # check authentication
                 headers = df_cumsum.columns.tolist()
                 col_out = headers.index("moving_out_date") + 1
                 # Update cells directly
-                worksheet2.update_cell(row_index, col_out, moving_out_date.strftime("%Y-%m-%d"))
+                worksheet2.update_cell(row_index, col_out, moving_out_date_str)
 
                 ###degub 
                 #moving_out_date = df_cumsum.loc[df_cumsum['name'] == name, 'moving_out_date'].iloc[0]
@@ -274,11 +272,12 @@ if username in user_dict: # check authentication
                 col_recv = headers.index("recieves") + 1
                 worksheet2.update_cell(row_index, col_recv, str(recieves))
                 
-                st.success(f"✅ {name} moves-out on {moving_out_date.strftime("%Y-%m-%d")} and receives {recieves} €.")
+                st.success(f"✅ {name} moves-out on {moving_out_date_str} and receives {recieves} €.")
                 st.markdown("Detailed list of expenses and loss of value:")
                 st.write(detailed_df)
-
+                
                 append_tenant_bill(worksheet3, detailed_df, tenant_name=name)
+                
                 
                 
 
