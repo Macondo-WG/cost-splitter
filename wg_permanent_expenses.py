@@ -71,6 +71,7 @@ if username in user_dict: # check authentication
             
 
             if moving_out_date is not '0':
+
                 time_diffs = pd.to_datetime(moving_out_date, format="%Y-%m-%d")  -  pd.to_datetime(df_itemdata.date_of_purchase[mask], format="%Y-%m-%d")
                 years = [round(i.days/365, 2) for i in time_diffs]
                 costs = pd.to_numeric(df_itemdata.cost[mask], errors='coerce')
@@ -122,7 +123,7 @@ if username in user_dict: # check authentication
         if st.button("Submit Expense"):
             new_row = {
                 "item": item,
-                "cost": cost,
+                "cost": str(cost),
                 "date_of_purchase": date_of_purchase.strftime("%Y-%m-%d"),
                 "bought_by": bought_by,
                 "split_among" : split_among
@@ -173,9 +174,9 @@ if username in user_dict: # check authentication
                 new_row = {
                     "name": name,
                     "moving_in_date": mov_in.strftime("%Y-%m-%d"),
-                    "owes": owes,
-                    "moving_out_date" : mov_out,
-                    "recieves": recieves,
+                    "owes": str(owes),
+                    "moving_out_date" : str(mov_out),
+                    "recieves": str(recieves),
                 }
 
                 #df_cumsum.loc[len(df_cumsum)] = [name, mov_in, owes, mov_out, recieves ]
@@ -218,7 +219,7 @@ if username in user_dict: # check authentication
                 
                 recieves, _ = get_final_investments(df_itemdata, df_cumsum, name)
                 col_recv = headers.index("recieves") + 1
-                worksheet2.update_cell(row_index, col_recv, float(recieves))
+                worksheet2.update_cell(row_index, col_recv, str(recieves))
 
                 st.success(f"✅ {name} moves-out date and receives {recieves}.")
             
