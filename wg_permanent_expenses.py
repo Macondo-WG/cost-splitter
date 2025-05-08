@@ -97,12 +97,12 @@ if username in user_dict: # check authentication
                 # format t pd.datetimearray
                 moving_in_date = pd.to_datetime(moving_in_date, format="%Y-%m-%d")
                 years_in_wg = round((moving_out_date - moving_in_date).days/365, 2)
-                rest_of_inherited = inherited * (1-0.1)**years_in_wg/no_members
+                rest_of_inherited = inherited * (1-0.1)**years_in_wg
                 st.write(type(rest_of_inherited), rest_of_inherited)
                 
                 rest_value_sum = rest_value_item.sum() + rest_of_inherited
                 
-                return str(rest_value_sum), pd.concat([rest_value_item, pd.Series(rest_of_inherited)])
+                return str(round(rest_value_sum, 2)), pd.concat([rest_value_item, pd.Series(rest_of_inherited)])
             else:
                 return '0','0'
 
