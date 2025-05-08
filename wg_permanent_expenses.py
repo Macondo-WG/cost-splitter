@@ -74,7 +74,7 @@ if username in user_dict: # check authentication
             elif name in df_cumsum['name']: # if previous tenant in list, then one can owe
                 st.write('name in list')
                 moving_out_date = df_cumsum.loc[df_cumsum['name'] == name, 'moving_out_date'].iloc[0]
-            else: # if no previous tenant, one does not owe anything
+            elif name not in df_cumsum['name']: # if no previous tenant, one does not owe anything
                 st.write('no previous tenant')
                 moving_out_date = '0'
 
