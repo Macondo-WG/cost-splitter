@@ -80,7 +80,7 @@ if username in user_dict: # check authentication
                 inherited =  df_cumsum.loc[df_cumsum['name'] == name, 'owes'].iloc[0]
                 moving_in_date = df_cumsum.loc[df_cumsum['name'] == name, 'moving_in_date'].iloc[0]
                 
-                years_in_wg = round((datetime.strptime(moving_out_date) - datetime.strptime(moving_in_date)).days/365, 2)
+                years_in_wg = round((datetime.strptime(moving_out_date, '%Y-%m-%d') - datetime.strptime(moving_in_date, '%Y-%m-%d')).days/365, 2)
                 
                 rest_of_inherited = inherited * (1-0.1)**years_in_wg/no_members
 
