@@ -68,19 +68,25 @@ if username in user_dict: # check authentication
             no_members = 3 # assume number of WG members stays same
             
             moving_out_date = df_cumsum.loc[df_cumsum['name'] == name, 'moving_out_date'].iloc[0]
-            st.write('moving_out_date' , moving_out_date) #debug
+          
 
             if moving_out_date is not '0':
                 time_diffs = pd.to_datetime(moving_out_date, format="%Y-%m-%d")  -  pd.to_datetime(df_itemdata.date_of_purchase[mask], format="%Y-%m-%d")
-             
                 years = [round(i.days/365, 2) for i in time_diffs]
                 costs = pd.to_numeric(df_itemdata.cost[mask], errors='coerce')
-                st.write(costs)
                 rest_value_item = costs * np.power(np.ones(len(costs))*(1 - 0.1), years)/no_members
-
-                rest_value_sum = rest_value_item.sum()
                 
-                return rest_value_sum, rest_value_item
+                # add inherited expenses but subtract loss of value
+                inherited =  df_cumsum.loc[df_cumsum['name'] == name, 'owes'].iloc[0]
+                moving_in_date = df_cumsum.loc[df_cumsum['name'] == name, 'moving_in_date'].iloc[0]
+                
+                years_in_wg = round((datetime.strptime(moving_out_date) - datetime.strptime(moving_in_date)).days/365, 2)
+                
+                rest_of_inherited = inherited * (1-0.1)**years_in_wg/no_members
+
+                rest_value_sum = rest_value_item.sum() + rest_of_inherited
+                
+                return rest_value_sum, pd.concat([rest_value_item, rest_of_inherited])
             else:
                 return 0,0
 
@@ -200,21 +206,21 @@ if username in user_dict: # check authentication
             name = st.selectbox("Member to Move Out", list_current_names )
             moving_out_date = st.date_input("Date of Moving Out", value=datetime.today(), key="moving_out_date").strftime("%Y-%m-%d")
             
+            if st.button("bill"):
+                # Find row index (add 2 because gspread is 1-indexed and row 1 is header)
+                row_index = df_cumsum[df_cumsum['name'] == name].index[0] + 2
+                # Get column indices (also 1-indexed)
+                headers = df_cumsum.columns.tolist()
+                col_out = headers.index("moving_out_date") + 1
+                # Update cells directly
+                worksheet2.update_cell(row_index, col_out, moving_out_date)
+                
+                recieves, _ = get_final_investments(df_itemdata, df_cumsum, name)
+                col_recv = headers.index("recieves") + 1
+                worksheet2.update_cell(row_index, col_recv, recieves)
 
-            # Find row index (add 2 because gspread is 1-indexed and row 1 is header)
-            row_index = df_cumsum[df_cumsum['name'] == name].index[0] + 2
-            # Get column indices (also 1-indexed)
-            headers = df_cumsum.columns.tolist()
-            col_out = headers.index("moving_out_date") + 1
-            # Update cells directly
-            worksheet2.update_cell(row_index, col_out, moving_out_date)
+                st.success(f"✅ {name} moves-out date and receives {recieves}.")
             
-            recieves, _ = get_final_investments(df_itemdata, df_cumsum, name)
-            col_recv = headers.index("recieves") + 1
-            worksheet2.update_cell(row_index, col_recv, recieves)
-
-            st.success(f"✅ {name} moves-out date and receives {recieves}.")
-        
         #if st.button("Clear Entries"):
         #    for key in ["name"]:
         #        st.session_state.key = ""
