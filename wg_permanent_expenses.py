@@ -77,7 +77,7 @@ if username in user_dict: # check authentication
                 rest_value_item = costs * np.power(np.ones(len(costs))*(1 - 0.1), years)/no_members
                 
                 # add inherited expenses but subtract loss of value
-                inherited =  float(df_cumsum.loc[df_cumsum['name'] == name, 'owes'].iloc[0])
+                inherited =  pd.to_numeric(df_cumsum.loc[df_cumsum['name'] == name, 'owes'].iloc[0])
                 st.write(type(inherited), inherited)
                 moving_in_date = df_cumsum.loc[df_cumsum['name'] == name, 'moving_in_date'].iloc[0]
                 
