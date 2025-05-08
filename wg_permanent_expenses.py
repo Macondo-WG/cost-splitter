@@ -112,8 +112,9 @@ if username in user_dict: # check authentication
                 detailed_list = {'expense': descrp, 
                                  'initial expenses': costs_to_print ,
                                  'rest after value loss': rest_value_item_to_print}
+                
                 detailed_list['initial expenses'].insert(0, inherited)
-                detailed_list['initial expenses'].append(detailed_list['initial expenses'])
+                detailed_list['initial expenses'].append(sum(detailed_list['initial expenses']))
 
                 #st.write(len( detailed_list['initial expenses']), detailed_list['initial expenses'])
                 detailed_list['rest after value loss'].insert(0, rest_of_inherited)
