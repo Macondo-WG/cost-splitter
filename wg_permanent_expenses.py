@@ -101,8 +101,8 @@ if username in user_dict: # check authentication
                 st.write(type(rest_of_inherited), rest_of_inherited)
                 
                 rest_value_sum = rest_value_item.sum() + rest_of_inherited
-                
-                return str(round(rest_value_sum, 2)), pd.concat([rest_value_item, pd.Series(rest_of_inherited)])
+                detailed_list = {'initial expenses': [costs, inherited] ,'rest after value loss': pd.concat([rest_value_item, pd.Series(rest_of_inherited)])}
+                return str(round(rest_value_sum, 2)),  pd.DataFrame(detailed_list)
             else:
                 return '0','0'
 
@@ -235,12 +235,13 @@ if username in user_dict: # check authentication
                 #moving_out_date = df_cumsum.loc[df_cumsum['name'] == name, 'moving_out_date'].iloc[0]
                 #moving_out_date = pd.to_datetime(moving_out_date, format="%Y-%m-%d") 
                 #st.write('moving out date', moving_out_date, type(moving_out_date))
-                recieves, _ = get_final_investments(df_itemdata, df_cumsum, name, moving_out_date=moving_out_date)
+                recieves, detailed_list = get_final_investments(df_itemdata, df_cumsum, name, moving_out_date=moving_out_date)
                 col_recv = headers.index("recieves") + 1
                 worksheet2.update_cell(row_index, col_recv, str(recieves))
 
                 st.success(f"✅ {name} moves-out on {moving_out_date.strftime("%Y-%m-%d")} and receives {recieves} €.")
-            
+                st.success(f"✅ detailed list of expenses and loss of value: {detailed_list}")
+
         #if st.button("Clear Entries"):
         #    for key in ["name"]:
         #        st.session_state.key = ""
