@@ -60,19 +60,23 @@ if username in user_dict: # check authentication
 
 
         #### DEFINE FUNCTION TO CALCULATE LOSS IN VALUE OF EXPENSES OVER YEARS  
-        def get_final_investments(df_itemdata, df_cumsum, name):
+        def get_final_investments(df_itemdata, df_cumsum, name, moving_out_date=None):
             '''selects all items in which <name> participated. counts years from day of purchase until day of moving out. 
             calculates negative compund interest with a value decrease of 10% p.a.'''
             
             mask = [name in i for i in df_itemdata.split_among.tolist()]
             no_members = 3 # assume number of WG members stays same
             
-            moving_out_date = df_cumsum.loc[df_cumsum['name'] == name, 'moving_out_date'].iloc[0]
             
+            if moving_out_date is not None:
+                moving_out_date = moving_out_date
+            else:
+                moving_out_date = df_cumsum.loc[df_cumsum['name'] == name, 'moving_out_date'].iloc[0]#
 
             if moving_out_date is not '0':
 
-                time_diffs = pd.to_datetime(moving_out_date, format="%Y-%m-%d")  -  pd.to_datetime(df_itemdata.date_of_purchase[mask], format="%Y-%m-%d")
+                #time_diffs = pd.to_datetime(moving_out_date, format="%Y-%m-%d")  -  pd.to_datetime(df_itemdata.date_of_purchase[mask], format="%Y-%m-%d")
+                time_diffs = moving_out_date -  pd.to_datetime(df_itemdata.date_of_purchase[mask], format="%Y-%m-%d")
                 years = [round(i.days/365, 2) for i in time_diffs]
                 costs = pd.to_numeric(df_itemdata.cost[mask], errors='coerce')
                 st.write('costs', costs, type(costs))
