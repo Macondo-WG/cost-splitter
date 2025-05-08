@@ -101,7 +101,11 @@ if username in user_dict: # check authentication
                 st.write(type(rest_of_inherited), rest_of_inherited)
                 
                 rest_value_sum = rest_value_item.sum() + rest_of_inherited
-                detailed_list = {'initial expenses': [costs, inherited] ,'rest after value loss': rest_value_item.to_list().append(rest_of_inherited)}
+                
+                detailed_list = {'initial expenses': costs.to_list() ,'rest after value loss': rest_value_item.to_list()}
+                detailed_list['initial expenses'].append(inherited)
+                detailed_list['rest after value loss'].append(rest_of_inherited)
+                
                 return str(round(rest_value_sum, 2)),  pd.DataFrame(detailed_list)
             else:
                 return '0','0'
