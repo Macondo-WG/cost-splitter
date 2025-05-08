@@ -68,7 +68,7 @@ if username in user_dict: # check authentication
             no_members = 3 # assume number of WG members stays same
             
             moving_out_date = df_cumsum.loc[df_cumsum['name'] == name, 'moving_out_date'].iloc[0]
-          
+            st.write(moving_out_date, type(moving_out_date))
 
             if moving_out_date is not '0':
                 time_diffs = pd.to_datetime(moving_out_date, format="%Y-%m-%d")  -  pd.to_datetime(df_itemdata.date_of_purchase[mask], format="%Y-%m-%d")
