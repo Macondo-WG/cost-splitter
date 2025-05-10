@@ -31,7 +31,7 @@ if username in user_dict: # check authentication
         client = gspread.authorize(creds)
 
         # Connect to google sheet and get data as a DataFrame
-        spreadsheet = client.open("PermanentExpenses")
+        spreadsheet = client.open("Permanent_Expenses")
 
         worksheet1 = spreadsheet.get_worksheet(0) 
         # Read all values
