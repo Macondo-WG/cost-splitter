@@ -270,7 +270,7 @@ if username in user_dict: # check authentication
                 #st.write('moving out date', moving_out_date, type(moving_out_date))
                 recieves, detailed_df = get_final_investments(df_itemdata, df_cumsum, name, moving_out_date=moving_out_date)
                 col_recv = headers.index("recieves") + 1
-                worksheet2.update_cell(row_index, col_recv, str(recieves))
+                worksheet2.update_cell(row_index, col_recv, str(round(recieves, 2)))
                 
                 st.success(f"✅ {name} moves-out on {moving_out_date_str} and receives {recieves} €.")
                 st.markdown("Detailed list of expenses and loss of value:")
