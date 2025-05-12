@@ -171,7 +171,8 @@ if username in user_dict: # check authentication
                 "split_among" : split_among
             }
             df_itemdata = pd.concat([df_itemdata, pd.DataFrame([new_row])], ignore_index=True)
-            df_itemdata.insert(0, 'index', range(1, len(df_itemdata) + 1))
+            #df_itemdata.insert(0, 'index', range(1, len(df_itemdata) + 1))
+            df_itemdata.index  = range(1, len(df_itemdata) + 1)
 
             # Upload back to Google Sheets
             worksheet1.clear()
