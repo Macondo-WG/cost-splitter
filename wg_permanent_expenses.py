@@ -173,10 +173,10 @@ if username in user_dict: # check authentication
             df_itemdata = pd.concat([df_itemdata, pd.DataFrame([new_row])], ignore_index=True)
             #df_itemdata.insert(0, 'index', range(1, len(df_itemdata) + 1))
             df_itemdata.item  = [str(i) for i in range(1, len(df_itemdata) + 1)]
-
+            st.write(df_itemdata)
             # Upload back to Google Sheets
             #worksheet1.clear()
-            worksheet1.update([df_itemdata.columns.values.tolist()] + df_itemdata.values.tolist())
+            #worksheet1.update([df_itemdata.columns.values.tolist()] + df_itemdata.values.tolist())
             
             st.success("✅ Entry saved!")
             st.balloons()
