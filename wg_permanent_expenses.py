@@ -164,6 +164,7 @@ if username in user_dict: # check authentication
         # headers in sheet: item	cost	date_of_purchase	bought_by	split_among
         if st.button("Submit Expense"):
             new_row = {
+                "index": len(df_itemdata) + 1,
                 "item": item,
                 "cost": str(cost),
                 "date_of_purchase": date_of_purchase.strftime("%Y-%m-%d"),
@@ -172,7 +173,8 @@ if username in user_dict: # check authentication
             }
             df_itemdata = pd.concat([df_itemdata, pd.DataFrame([new_row])], ignore_index=True)
             #df_itemdata.insert(0, 'index', range(1, len(df_itemdata) + 1))
-            df_itemdata.index  = [i for i in range(1, len(df_itemdata) + 1)]
+            st.write([i for i in range(1, len(df_itemdata) + 1)])
+            #df_itemdata.index  = [i for i in range(1, len(df_itemdata) + 1)]
             st.write(df_itemdata)
 
             # Upload back to Google Sheets
